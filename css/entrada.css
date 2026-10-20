@@ -1,0 +1,756 @@
+/* =========================================================
+   Invitación de graduación · Sección 1: Entrada de gala
+   Composición: dos puertas a pantalla completa que comparten
+   un marco art déco (imagen escalada por zonas) y un sello
+   centrado sobre la unión.
+   ========================================================= */
+
+:root {
+  --esmeralda: #084C3D;
+  --champana: #D8C5A5;
+  --negro: #101211;
+  --marfil: #F5F0E6;
+  --champana-tenue: rgba(216, 197, 165, .3);
+  --luz-calida: rgba(255, 232, 190, .6);
+
+  --fuente-display: "Poiret One", "Josefin Sans", "Futura", "Century Gothic", sans-serif;
+  --fuente-texto: "Josefin Sans", "Futura", "Century Gothic", "Avenir Next", system-ui, sans-serif;
+
+  color-scheme: dark;
+}
+
+*,
+*::before,
+*::after { box-sizing: border-box; }
+
+html,
+body {
+  margin: 0;
+  background: var(--negro);
+  color: var(--marfil);
+}
+
+body {
+  font-family: var(--fuente-texto);
+  overflow-x: clip;
+  -webkit-font-smoothing: antialiased;
+}
+
+html.entrada-activa,
+html.entrada-activa body { overflow: hidden; }
+
+/* =========================================================
+   Contenedor de la entrada
+   ========================================================= */
+
+.entrada {
+  position: fixed;
+  inset: 0;
+  z-index: 100;
+  overflow: hidden;
+  container-type: size;
+
+  /* Escala del marco: ajusta al ancho en celular y al alto en pantallas anchas */
+  --s: min(100cqw / 941, 100cqh / 1150);
+
+  /* Columnas y filas del marco (en px de la imagen original × escala) */
+  --c0: calc(180 * var(--s));
+  --c1: calc((100cqw - 751 * var(--s)) / 2);
+  --c2: calc(391 * var(--s));
+  --r0: calc(330 * var(--s));
+  --r2: calc(90 * var(--s));
+  --r4: calc(407 * var(--s));
+  --r-libre: calc(100cqh - 827 * var(--s));
+  --r1: calc(var(--r-libre) * 410 / 845);
+  --r3: calc(var(--r-libre) * 435 / 845);
+
+  /* Sello y distribución vertical */
+  --sello: clamp(96px, min(30vw, 19vh), 168px);
+  --sello-y: 55%;
+  --hueco: clamp(14px, 2.8vh, 28px);
+}
+
+/* ---------- Puertas ---------- */
+
+.entrada__puertas {
+  position: absolute;
+  inset: 0;
+  z-index: 2;
+  perspective: 1700px;
+  perspective-origin: 50% 50%;
+}
+
+.puerta {
+  position: absolute;
+  top: 0;
+  bottom: 0;
+  width: 50%;
+  overflow: hidden;
+  backface-visibility: hidden;
+  will-change: transform;
+}
+
+.puerta--izq { left: 0; transform-origin: 0 50%; }
+.puerta--der { right: 0; transform-origin: 100% 50%; }
+
+/* Cada puerta muestra su mitad de un mismo lienzo a pantalla completa */
+.puerta__lienzo {
+  position: absolute;
+  top: 0;
+  bottom: 0;
+  width: 200%;
+}
+
+.puerta--izq .puerta__lienzo { left: 0; }
+.puerta--der .puerta__lienzo { right: 0; }
+
+/* Marco: la imagen se divide en 5 × 5 zonas; las esquinas, el abanico
+   superior, el birrete y los rombos laterales conservan su proporción,
+   y sólo se estiran los tramos de líneas rectas y el fondo liso. */
+.marco {
+  position: absolute;
+  inset: 0;
+  display: grid;
+  grid-template-columns: var(--c0) var(--c1) var(--c2) var(--c1) var(--c0);
+  grid-template-rows: var(--r0) var(--r1) var(--r2) var(--r3) var(--r4);
+  background: #06412d;
+}
+
+.marco__zona {
+  background-image: url("../img/fondo-esmeralda.webp");
+  background-repeat: no-repeat;
+  background-size:
+    calc(941 * var(--w) / var(--sw))
+    calc(1672 * var(--h) / var(--sh));
+  background-position:
+    calc(var(--sx) * var(--w) / var(--sw) * -1)
+    calc(var(--sy) * var(--h) / var(--sh) * -1);
+}
+
+/* Ajuste de tono hacia el esmeralda de la paleta */
+.puerta__tinte {
+  position: absolute;
+  inset: 0;
+  background: var(--esmeralda);
+  mix-blend-mode: color;
+  opacity: .32;
+}
+
+/* Grano mate */
+.puerta__grano {
+  position: absolute;
+  inset: 0;
+  opacity: .14;
+  mix-blend-mode: overlay;
+  background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='180' height='180'%3E%3Cfilter id='g'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='.85' numOctaves='3' stitchTiles='stitch'/%3E%3CfeColorMatrix type='saturate' values='0'/%3E%3C/filter%3E%3Crect width='100%25' height='100%25' filter='url(%23g)'/%3E%3C/svg%3E");
+  background-size: 180px 180px;
+}
+
+/* Reflejo champaña muy discreto que recorre ambas puertas */
+.puerta__brillo {
+  position: absolute;
+  inset: 0;
+  mix-blend-mode: screen;
+  background: linear-gradient(105deg,
+    transparent 44%,
+    rgba(216, 197, 165, .06) 48.5%,
+    rgba(245, 232, 205, .10) 50%,
+    rgba(216, 197, 165, .06) 51.5%,
+    transparent 56%);
+  background-size: 320% 100%;
+  background-position: 100% 0;
+  animation: brillo 12s ease-in-out 2.4s infinite;
+}
+
+@keyframes brillo {
+  0% { background-position: 100% 0; }
+  45%, 100% { background-position: 0 0; }
+}
+
+/* Canto interior de cada hoja: línea champaña y sombra de la unión */
+.puerta__canto {
+  position: absolute;
+  top: 0;
+  bottom: 0;
+  z-index: 2;
+  width: 14px;
+}
+
+/* El canto se ilumina con la luz del salón al abrirse */
+.puerta__canto::after {
+  content: "";
+  position: absolute;
+  top: 0;
+  bottom: 0;
+  width: 46px;
+  opacity: 0;
+}
+
+.puerta--izq .puerta__canto::after {
+  right: 0;
+  background: linear-gradient(to left, rgba(255, 232, 190, .55), rgba(216, 197, 165, .12) 40%, transparent);
+}
+
+.puerta--der .puerta__canto::after {
+  left: 0;
+  background: linear-gradient(to right, rgba(255, 232, 190, .55), rgba(216, 197, 165, .12) 40%, transparent);
+}
+
+.puerta--izq .puerta__canto {
+  right: 0;
+  background:
+    linear-gradient(var(--champana-tenue), var(--champana-tenue)) right 3px top / 1px 100% no-repeat,
+    linear-gradient(to left, rgba(16, 18, 17, .45), rgba(16, 18, 17, 0));
+}
+
+.puerta--der .puerta__canto {
+  left: 0;
+  background:
+    linear-gradient(var(--champana-tenue), var(--champana-tenue)) left 3px top / 1px 100% no-repeat,
+    linear-gradient(to right, rgba(16, 18, 17, .45), rgba(16, 18, 17, 0));
+}
+
+/* Sombra que oscurece la hoja al girar */
+.puerta__sombra {
+  position: absolute;
+  inset: 0;
+  z-index: 1;
+  background: var(--negro);
+  opacity: 0;
+}
+
+/* ---------- Sello ---------- */
+
+.sello {
+  position: absolute;
+  left: 50%;
+  top: var(--sello-y);
+  width: calc(var(--sello) * 320 / 140);
+  height: calc(var(--sello) * 320 / 140);
+  transform: translate(-50%, -50%);
+  overflow: visible;
+  color: var(--champana);
+}
+
+/* ---------- Iluminación ---------- */
+
+.entrada__ambiente {
+  position: absolute;
+  inset: 0;
+  z-index: 3;
+  pointer-events: none;
+  background:
+    radial-gradient(ellipse 70% 42% at 50% 0%, rgba(216, 197, 165, .12), transparent 70%),
+    radial-gradient(ellipse 34% 26% at 50% var(--sello-y), rgba(245, 240, 230, .07), transparent 75%),
+    radial-gradient(ellipse 120% 95% at 50% 48%, transparent 52%, rgba(16, 18, 17, .55) 100%);
+}
+
+.entrada__halo,
+.entrada__destello {
+  position: absolute;
+  left: 50%;
+  top: var(--sello-y);
+  border-radius: 50%;
+  pointer-events: none;
+  transform: translate(-50%, -50%);
+}
+
+.entrada__halo {
+  z-index: 4;
+  width: calc(var(--sello) * 2.1);
+  height: calc(var(--sello) * 2.1);
+  background: radial-gradient(circle, rgba(216, 197, 165, .16), rgba(216, 197, 165, .05) 45%, transparent 70%);
+  opacity: .55;
+  animation: halo 5s ease-in-out infinite alternate;
+  transition: opacity .4s ease;
+}
+
+@keyframes halo {
+  to { opacity: 1; }
+}
+
+.entrada__destello {
+  z-index: 5;
+  width: calc(var(--sello) * 3.2);
+  height: calc(var(--sello) * 3.2);
+  background: radial-gradient(circle,
+    rgba(255, 246, 225, .95) 0,
+    rgba(245, 225, 185, .55) 16%,
+    rgba(216, 197, 165, .18) 38%,
+    transparent 62%);
+  mix-blend-mode: screen;
+  opacity: 0;
+}
+
+/* Anillo que se expande desde el sello */
+.entrada__anillo {
+  position: absolute;
+  left: 50%;
+  top: var(--sello-y);
+  z-index: 5;
+  width: calc(var(--sello) * 1.05);
+  height: calc(var(--sello) * 1.05);
+  border: 1px solid rgba(245, 232, 205, .9);
+  border-radius: 50%;
+  box-shadow: 0 0 14px rgba(216, 197, 165, .45), inset 0 0 10px rgba(216, 197, 165, .3);
+  pointer-events: none;
+  opacity: 0;
+  transform: translate(-50%, -50%);
+}
+
+/* Línea de luz que se filtra por la unión antes de abrir */
+.entrada__rendija {
+  position: absolute;
+  top: 0;
+  bottom: 0;
+  left: 50%;
+  z-index: 3;
+  width: 2px;
+  margin-left: -1px;
+  pointer-events: none;
+  background: linear-gradient(to bottom,
+    transparent 2%,
+    rgba(255, 242, 215, .95) 18%,
+    rgba(255, 242, 215, .95) 82%,
+    transparent 98%);
+  box-shadow:
+    0 0 10px 1px rgba(255, 226, 170, .6),
+    0 0 36px 6px rgba(216, 197, 165, .25);
+  -webkit-mask-image: linear-gradient(to bottom,
+    #000 calc(var(--sello-y) - var(--sello) * .55),
+    transparent calc(var(--sello-y) - var(--sello) * .45),
+    transparent calc(var(--sello-y) + var(--sello) * .45),
+    #000 calc(var(--sello-y) + var(--sello) * .55));
+  mask-image: linear-gradient(to bottom,
+    #000 calc(var(--sello-y) - var(--sello) * .55),
+    transparent calc(var(--sello-y) - var(--sello) * .45),
+    transparent calc(var(--sello-y) + var(--sello) * .45),
+    #000 calc(var(--sello-y) + var(--sello) * .55));
+  transform-origin: 50% var(--sello-y);
+  transform: scaleY(0);
+  opacity: 0;
+}
+
+/* Partículas doradas en el haz de luz (se dibujan con canvas) */
+.entrada__polvo {
+  position: absolute;
+  inset: 0;
+  z-index: 1;
+  width: 100%;
+  height: 100%;
+  pointer-events: none;
+  opacity: 0;
+}
+
+/* Luz cálida detrás de las puertas */
+.entrada__luz {
+  position: absolute;
+  inset: 0;
+  z-index: 1;
+  pointer-events: none;
+  background:
+    linear-gradient(90deg, transparent 44%, rgba(255, 240, 212, .5) 49%, rgba(255, 246, 228, .75) 50%, rgba(255, 240, 212, .5) 51%, transparent 56%),
+    radial-gradient(ellipse 24% 72% at 50% var(--sello-y), var(--luz-calida), rgba(216, 197, 165, .16) 55%, transparent 80%),
+    radial-gradient(ellipse 45% 22% at 50% 100%, rgba(255, 228, 180, .35), transparent 75%),
+    radial-gradient(ellipse 65% 55% at 50% 55%, rgba(216, 197, 165, .14), transparent 75%);
+  opacity: 0;
+  transform: scaleX(.02);
+}
+
+/* ---------- Textos ---------- */
+
+.entrada__intro,
+.entrada__accion {
+  position: absolute;
+  left: 0;
+  right: 0;
+  z-index: 6;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  text-align: center;
+  padding-left: max(40px, calc(env(safe-area-inset-left, 0px) + 24px));
+  padding-right: max(40px, calc(env(safe-area-inset-right, 0px) + 24px));
+}
+
+.entrada__intro {
+  bottom: calc(100% - var(--sello-y) + var(--sello) / 2 + var(--hueco));
+  gap: clamp(.7rem, 1.8vh, 1.15rem);
+}
+
+.entrada__accion {
+  top: calc(var(--sello-y) + var(--sello) / 2 + var(--hueco));
+}
+
+.entrada__antetitulo {
+  margin: 0;
+  display: flex;
+  align-items: center;
+  gap: .9em;
+  font: 600 clamp(.68rem, .62rem + .3vw, .82rem) / 1 var(--fuente-texto);
+  letter-spacing: .4em;
+  text-transform: uppercase;
+  color: var(--champana);
+}
+
+/* Compensa el espaciado final para centrar ópticamente */
+.entrada__antetitulo { padding-left: .4em; }
+
+.entrada__antetitulo::before,
+.entrada__antetitulo::after {
+  content: "";
+  width: clamp(1.4rem, 5vw, 2.8rem);
+  height: 1px;
+  background: linear-gradient(90deg, transparent, var(--champana));
+}
+
+.entrada__antetitulo::after {
+  background: linear-gradient(90deg, var(--champana), transparent);
+}
+
+.entrada__titulo {
+  margin: 0;
+  max-width: 17ch;
+  font: 400 clamp(1.75rem, 1.05rem + 3.4vw, 3.3rem) / 1.14 var(--fuente-display);
+  letter-spacing: .02em;
+  color: var(--marfil);
+  text-wrap: balance;
+  text-shadow: 0 1px 2px rgba(16, 18, 17, .55), 0 0 28px rgba(16, 18, 17, .35);
+}
+
+@media (min-width: 900px) {
+  .entrada__titulo { max-width: 22ch; }
+}
+
+/* ---------- Botón ---------- */
+
+.boton-abrir {
+  position: relative;
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  min-height: 48px;
+  padding: .95rem 2.1rem .8rem;
+  font: 600 clamp(.72rem, .68rem + .2vw, .82rem) / 1 var(--fuente-texto);
+  letter-spacing: .3em;
+  text-transform: uppercase;
+  color: var(--marfil);
+  background: rgba(16, 18, 17, .45);
+  border: 1px solid var(--champana);
+  border-radius: 0;
+  box-shadow:
+    inset 0 0 0 3px rgba(16, 18, 17, .45),
+    inset 0 0 0 4px rgba(216, 197, 165, .35);
+  cursor: pointer;
+  -webkit-tap-highlight-color: transparent;
+  transition: background-color .3s ease, box-shadow .3s ease, color .3s ease;
+}
+
+.boton-abrir span { margin-right: -.3em; }
+
+/* Rombos laterales */
+.boton-abrir::before,
+.boton-abrir::after {
+  content: "";
+  position: absolute;
+  top: 50%;
+  width: 7px;
+  height: 7px;
+  background: var(--negro);
+  border: 1px solid var(--champana);
+  transform: translateY(-50%) rotate(45deg);
+}
+
+.boton-abrir::before { left: -4px; }
+.boton-abrir::after { right: -4px; }
+
+.boton-abrir:hover {
+  background: rgba(216, 197, 165, .14);
+}
+
+.boton-abrir:focus { outline: none; }
+
+.boton-abrir:focus-visible {
+  outline: 2px solid var(--marfil);
+  outline-offset: 6px;
+  box-shadow:
+    inset 0 0 0 3px rgba(16, 18, 17, .45),
+    inset 0 0 0 4px rgba(216, 197, 165, .35),
+    0 0 22px rgba(216, 197, 165, .45);
+}
+
+/* Zona sensible del sello */
+.entrada__sello-zona {
+  position: absolute;
+  left: 50%;
+  top: var(--sello-y);
+  z-index: 6;
+  width: var(--sello);
+  height: var(--sello);
+  border-radius: 50%;
+  transform: translate(-50%, -50%);
+  cursor: pointer;
+  -webkit-tap-highlight-color: transparent;
+}
+
+.entrada:has(.entrada__sello-zona:hover) .entrada__halo,
+.entrada:has(.boton-abrir:hover) .entrada__halo,
+.entrada:has(.boton-abrir:focus-visible) .entrada__halo {
+  animation-play-state: paused;
+  opacity: 1;
+}
+
+/* ---------- Aparición inicial ---------- */
+
+.entrada__antetitulo,
+.entrada__titulo,
+.entrada__accion {
+  animation: aparecer 1.1s cubic-bezier(.2, .7, .2, 1) both;
+}
+
+.entrada__antetitulo { animation-delay: .25s; }
+.entrada__titulo { animation-delay: .45s; }
+.entrada__accion { animation-delay: .75s; }
+
+.sello {
+  animation: sello-aparecer 1.4s ease-out both;
+}
+
+@keyframes aparecer {
+  from { opacity: 0; transform: translateY(10px); }
+}
+
+@keyframes sello-aparecer {
+  from { opacity: 0; }
+}
+
+/* =========================================================
+   Apertura (≈ 2.2 s)
+   0.00 s  el sello destella y emite un anillo de luz
+   0.10 s  textos y botón se retiran
+   0.25 s  una línea de luz se filtra por la unión de las puertas
+   0.50 s  las puertas ceden un poco y se abren con peso (1.45 s)
+   0.45 s  la vista avanza hacia el salón
+   0.55 s  la luz cálida se ensancha y flotan partículas doradas
+   1.70 s  la entrada se funde con la portada, ya visible detrás
+   ========================================================= */
+
+.entrada.is-abriendo { pointer-events: none; }
+
+/* ---- Sello ---- */
+.is-abriendo .entrada__destello {
+  animation: destello .8s cubic-bezier(.2, .6, .3, 1) forwards;
+}
+
+.is-abriendo .entrada__anillo {
+  animation: anillo .9s cubic-bezier(.15, .6, .3, 1) .05s forwards;
+}
+
+.is-abriendo .sello {
+  animation: sello-brillo .9s ease-out forwards;
+}
+
+.is-abriendo .entrada__halo {
+  animation: desvanecer .45s ease .2s forwards;
+}
+
+/* ---- Textos ---- */
+.is-abriendo .entrada__antetitulo {
+  animation: salir-antetitulo .6s cubic-bezier(.4, 0, .2, 1) .1s forwards;
+}
+
+.is-abriendo .entrada__titulo {
+  animation: salir-titulo .6s cubic-bezier(.4, 0, .2, 1) .14s forwards;
+}
+
+.is-abriendo .entrada__accion {
+  animation: salir-accion .45s cubic-bezier(.4, 0, .2, 1) .06s forwards;
+}
+
+.is-abriendo .entrada__ambiente {
+  animation: desvanecer .9s ease .55s forwards;
+}
+
+/* ---- Luz por la rendija ---- */
+.is-abriendo .entrada__rendija {
+  animation: rendija .75s cubic-bezier(.3, .1, .3, 1) .25s forwards;
+}
+
+/* ---- Puertas ---- */
+.is-abriendo .entrada__puertas {
+  animation: avanzar 1.75s cubic-bezier(.5, 0, .2, 1) .45s forwards;
+}
+
+.is-abriendo .puerta--izq {
+  animation: abrir-izq 1.45s linear .5s forwards;
+}
+
+.is-abriendo .puerta--der {
+  animation: abrir-der 1.45s linear .5s forwards;
+}
+
+.is-abriendo .puerta__sombra {
+  animation: sombrear 1.45s ease-in .5s forwards;
+}
+
+.is-abriendo .puerta__canto::after {
+  animation: canto-luz 1.3s ease-out .3s forwards;
+}
+
+/* ---- Salón ---- */
+.is-abriendo .entrada__luz {
+  animation: luz 1.35s cubic-bezier(.3, .1, .2, 1) .55s forwards;
+}
+
+.is-abriendo .entrada__polvo {
+  animation: aparecer-polvo .8s ease .6s forwards;
+}
+
+.entrada.is-abriendo {
+  animation: entrada-salida .6s cubic-bezier(.4, 0, .2, 1) 1.7s forwards;
+}
+
+@keyframes destello {
+  0%   { opacity: 0; transform: translate(-50%, -50%) scale(.35); }
+  28%  { opacity: 1; }
+  100% { opacity: 0; transform: translate(-50%, -50%) scale(1.35); }
+}
+
+@keyframes anillo {
+  0%   { opacity: 0; transform: translate(-50%, -50%) scale(.75); }
+  20%  { opacity: .9; }
+  100% { opacity: 0; transform: translate(-50%, -50%) scale(2.4); }
+}
+
+@keyframes sello-brillo {
+  0%   { filter: none; }
+  30%  { filter: brightness(1.6) drop-shadow(0 0 8px rgba(255, 240, 210, .9)); }
+  100% { filter: brightness(1.15) drop-shadow(0 0 3px rgba(255, 240, 210, .35)); }
+}
+
+@keyframes salir-antetitulo {
+  to { opacity: 0; letter-spacing: .75em; filter: blur(2px); visibility: hidden; }
+}
+
+@keyframes salir-titulo {
+  to { opacity: 0; transform: translateY(-12px) scale(.97); filter: blur(5px); visibility: hidden; }
+}
+
+@keyframes salir-accion {
+  to { opacity: 0; transform: translateY(10px) scale(.96); filter: blur(3px); visibility: hidden; }
+}
+
+@keyframes desvanecer {
+  to { opacity: 0; }
+}
+
+@keyframes rendija {
+  0%   { opacity: 0; transform: scaleY(0); }
+  35%  { opacity: 1; transform: scaleY(1); }
+  70%  { opacity: 1; transform: scaleY(1) scaleX(2.5); }
+  100% { opacity: 0; transform: scaleY(1) scaleX(9); }
+}
+
+@keyframes avanzar {
+  to { transform: scale(1.1); }
+}
+
+/* Primero ceden unos grados (pestillo), luego giran con inercia */
+@keyframes abrir-izq {
+  0%   { transform: rotateY(0); animation-timing-function: cubic-bezier(.45, 0, .55, 1); }
+  13%  { transform: translateX(-.4%) rotateY(5deg); animation-timing-function: cubic-bezier(.5, .05, .15, 1); }
+  100% { transform: translateX(-3%) rotateY(86deg); }
+}
+
+@keyframes abrir-der {
+  0%   { transform: rotateY(0); animation-timing-function: cubic-bezier(.45, 0, .55, 1); }
+  13%  { transform: translateX(.4%) rotateY(-5deg); animation-timing-function: cubic-bezier(.5, .05, .15, 1); }
+  100% { transform: translateX(3%) rotateY(-86deg); }
+}
+
+@keyframes sombrear {
+  to { opacity: .65; }
+}
+
+@keyframes canto-luz {
+  0%   { opacity: 0; }
+  35%  { opacity: 1; }
+  100% { opacity: .55; }
+}
+
+@keyframes luz {
+  0%   { opacity: 0; transform: scaleX(.02); }
+  40%  { opacity: 1; }
+  100% { opacity: 1; transform: scaleX(1); }
+}
+
+@keyframes aparecer-polvo {
+  to { opacity: 1; }
+}
+
+@keyframes entrada-salida {
+  to { opacity: 0; visibility: hidden; }
+}
+
+/* =========================================================
+   Pantallas bajas (celular horizontal)
+   ========================================================= */
+
+@media (max-height: 520px) {
+  .entrada {
+    --sello: clamp(64px, 17vh, 96px);
+    --sello-y: 51%;
+    --hueco: 8px;
+  }
+
+  .boton-abrir {
+    min-height: 40px;
+    padding: .75rem 1.8rem .6rem;
+  }
+
+  .entrada__titulo {
+    max-width: 32ch;
+    font-size: clamp(1.3rem, .9rem + 2.2vh, 1.9rem);
+  }
+
+  .entrada__intro { gap: .5rem; }
+}
+
+/* =========================================================
+   Movimiento reducido: sólo una transición breve de opacidad
+   ========================================================= */
+
+@media (prefers-reduced-motion: reduce) {
+  .puerta__brillo,
+  .entrada__halo,
+  .entrada__antetitulo,
+  .entrada__titulo,
+  .entrada__accion,
+  .sello { animation: none; }
+
+  .is-abriendo .entrada__destello,
+  .is-abriendo .sello,
+  .is-abriendo .entrada__halo,
+  .is-abriendo .entrada__antetitulo,
+  .is-abriendo .entrada__titulo,
+  .is-abriendo .entrada__accion,
+  .is-abriendo .entrada__ambiente,
+  .is-abriendo .puerta--izq,
+  .is-abriendo .puerta--der,
+  .is-abriendo .puerta__sombra,
+  .is-abriendo .puerta__canto::after,
+  .is-abriendo .entrada__puertas,
+  .is-abriendo .entrada__anillo,
+  .is-abriendo .entrada__rendija,
+  .is-abriendo .entrada__polvo,
+  .is-abriendo .entrada__luz { animation: none; }
+
+  .entrada.is-abriendo { animation: entrada-salida .45s ease forwards; }
+}
+
+/* =========================================================
+   Contenido de la invitación (preparado para la portada)
+   ========================================================= */
+
+.invitacion { position: relative; }
+

@@ -1,0 +1,764 @@
+<!doctype html>
+<html lang="es" class="entrada-activa">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
+  <title>Gala de Graduación</title>
+  <meta name="description" content="Invitación digital a la gala de graduación.">
+  <meta name="theme-color" content="#101211">
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Cormorant+Garamond:ital,wght@0,500;0,600;1,500&family=Josefin+Sans:wght@400;600&family=Poiret+One&display=swap">
+  <link rel="preload" as="image" href="img/fondo-esmeralda.webp" type="image/webp">
+  <link rel="stylesheet" href="css/entrada.css">
+  <link rel="stylesheet" href="css/portada.css">
+  <link rel="stylesheet" href="css/mensaje.css">
+  <link rel="stylesheet" href="css/cuenta.css">
+  <link rel="stylesheet" href="css/cuando.css">
+  <link rel="stylesheet" href="css/programa.css">
+  <link rel="stylesheet" href="css/vestimenta.css">
+  <link rel="stylesheet" href="css/galeria.css">
+  <link rel="stylesheet" href="css/confirmacion.css">
+  <script>document.documentElement.classList.add("js");</script>
+  <noscript><style>.entrada { display: none; } html.entrada-activa, html.entrada-activa body { overflow: auto; }</style></noscript>
+</head>
+<body>
+
+  <!-- ============ SECCIÓN 1 · ENTRADA ============ -->
+  <div class="entrada" id="entrada">
+
+    <!-- Luz cálida que aparece entre las puertas al abrirse -->
+    <div class="entrada__luz" aria-hidden="true"></div>
+    <canvas class="entrada__polvo" aria-hidden="true"></canvas>
+
+    <div class="entrada__puertas" aria-hidden="true">
+      <div class="puerta puerta--izq">
+        <div class="puerta__lienzo">
+          <div class="marco" data-marco></div>
+          <div class="puerta__tinte"></div>
+          <div class="puerta__grano"></div>
+          <div class="puerta__brillo"></div>
+          <svg class="sello" data-sello></svg>
+        </div>
+        <div class="puerta__canto"></div>
+        <div class="puerta__sombra"></div>
+      </div>
+      <div class="puerta puerta--der">
+        <div class="puerta__lienzo">
+          <div class="marco" data-marco></div>
+          <div class="puerta__tinte"></div>
+          <div class="puerta__grano"></div>
+          <div class="puerta__brillo"></div>
+          <svg class="sello" data-sello></svg>
+        </div>
+        <div class="puerta__canto"></div>
+        <div class="puerta__sombra"></div>
+      </div>
+    </div>
+
+    <!-- Iluminación tenue sobre las puertas -->
+    <div class="entrada__rendija" aria-hidden="true"></div>
+    <div class="entrada__ambiente" aria-hidden="true"></div>
+    <div class="entrada__halo" aria-hidden="true"></div>
+    <div class="entrada__destello" aria-hidden="true"></div>
+    <div class="entrada__anillo" aria-hidden="true"></div>
+
+    <!-- Textos -->
+    <header class="entrada__intro">
+      <p class="entrada__antetitulo">Gala de graduación</p>
+      <h1 class="entrada__titulo">Una gran historia merece una gran celebración</h1>
+    </header>
+
+    <!-- Zona sensible del sello (el botón es el control accesible) -->
+    <div class="entrada__sello-zona" data-abrir aria-hidden="true"></div>
+
+    <div class="entrada__accion">
+      <button type="button" class="boton-abrir" id="abrir-invitacion" data-abrir>
+        <span>Abrir invitación</span>
+      </button>
+    </div>
+  </div>
+
+  <!-- ============ CONTENIDO DE LA INVITACIÓN ============ -->
+  <main class="invitacion" id="invitacion">
+    <!-- ============ SECCIÓN 2 · PORTADA ============
+         Los datos entre corchetes se editan en js/datos.js -->
+    <section class="portada" id="portada" tabindex="-1" aria-labelledby="portada-titulo">
+
+      <div class="portada__fondo" aria-hidden="true">
+        <div class="portada__luz"></div>
+
+        <div class="portada__orn portada__orn--arco">
+          <img src="img/portada-arco.webp" alt="" width="540" height="1110" decoding="async">
+          <span class="portada__reflejo"></span>
+        </div>
+        <div class="portada__orn portada__orn--diploma">
+          <img src="img/portada-diploma.webp" alt="" width="701" height="1022" decoding="async">
+          <span class="portada__reflejo"></span>
+        </div>
+
+        <!-- Marco fino: completa las esquinas libres del fondo -->
+        <div class="portada__marco portada__marco--sup">
+          <svg class="portada__esquina" viewBox="0 0 96 96"><use href="#esquina-deco"/></svg>
+        </div>
+        <div class="portada__marco portada__marco--inf">
+          <svg class="portada__esquina" viewBox="0 0 96 96"><use href="#esquina-deco"/></svg>
+        </div>
+
+        <div class="portada__motas">
+          <i style="--x: 18%; --d: 0s;   --t: 17s; --z: 2px"></i>
+          <i style="--x: 31%; --d: 6s;   --t: 21s; --z: 1.5px"></i>
+          <i style="--x: 44%; --d: 11s;  --t: 19s; --z: 2.5px"></i>
+          <i style="--x: 57%; --d: 3s;   --t: 23s; --z: 1.5px"></i>
+          <i style="--x: 66%; --d: 14s;  --t: 18s; --z: 2px"></i>
+          <i style="--x: 79%; --d: 8s;   --t: 22s; --z: 1.5px"></i>
+          <i style="--x: 50%; --d: 17s;  --t: 20s; --z: 2px"></i>
+          <i style="--x: 25%; --d: 12s;  --t: 24s; --z: 1.5px"></i>
+        </div>
+
+        <div class="portada__velo"></div>
+        <div class="portada__resplandor"></div>
+      </div>
+
+      <div class="portada__contenido">
+        <div class="portada__cabecera">
+          <svg class="portada__emblema" viewBox="0 0 240 64" aria-hidden="true">
+            <g fill="none" stroke="currentColor" stroke-linejoin="round" stroke-linecap="round">
+              <path d="M8 32 H82" stroke-width=".8" opacity=".55"/>
+              <path d="M158 32 H232" stroke-width=".8" opacity=".55"/>
+              <path d="M38 27 H82 M158 37 H202" stroke-width=".6" opacity=".35"/>
+              <path d="M38 37 H82 M158 27 H202" stroke-width=".6" opacity=".35"/>
+              <polygon points="120,2 150,32 120,62 90,32" stroke-width="1"/>
+              <polygon points="120,8 144,32 120,56 96,32" stroke-width=".5" opacity=".6"/>
+              <polygon points="86,32 82,28 78,32 82,36" fill="currentColor" stroke="none"/>
+              <polygon points="154,32 158,28 162,32 158,36" fill="currentColor" stroke="none"/>
+              <!-- Birrete -->
+              <g transform="translate(120 33)" stroke-width="1.05">
+                <polygon points="0,-13 21,-4.5 0,4 -21,-4.5"/>
+                <path d="M-12 -0.6 V7 L0 11 L12 7 V-0.6"/>
+                <path d="M0 -4.5 L15 -0.5 V9"/>
+                <path d="M13.6 9 H16.4 L17.2 14 H12.8 Z" fill="currentColor" stroke="none"/>
+                <circle cx="0" cy="-4.5" r="1.1" fill="currentColor" stroke="none"/>
+              </g>
+            </g>
+          </svg>
+          <p class="portada__antetitulo">Una meta cumplida, un nuevo comienzo</p>
+          <h1 class="portada__titulo" id="portada-titulo">Gala de graduación</h1>
+        </div>
+
+        <div class="portada__protagonista">
+          <p class="portada__nombre" data-campo="nombre">[Nombre del graduado]</p>
+          <p class="portada__estudios" data-campo="estudios">[Carrera o nivel de estudios]</p>
+        </div>
+
+        <div class="portada__datos">
+          <span class="portada__divisor" aria-hidden="true"></span>
+          <p class="portada__fecha" data-fecha>
+            <span data-campo="fecha.dia">[Día]</span><span class="portada__punto" aria-hidden="true">·</span><span data-campo="fecha.mes">[Mes]</span><span class="portada__punto" aria-hidden="true">·</span><span data-campo="fecha.anio">[Año]</span>
+          </p>
+          <p class="portada__frase">Hay momentos que merecen celebrarse con quienes los hicieron posibles</p>
+        </div>
+      </div>
+
+      <a class="portada__continuar" id="portada-continuar" href="#mensaje-graduado">
+        <span>Descubre los detalles</span>
+        <svg viewBox="0 0 20 34" aria-hidden="true">
+          <path d="M10 1 V30 M3 23 L10 30 L17 23" fill="none" stroke="currentColor" stroke-width="1.2" stroke-linecap="round" stroke-linejoin="round"/>
+        </svg>
+      </a>
+
+      <!-- Esquina art déco reutilizable: escalones y abanico geométrico -->
+      <svg width="0" height="0" style="position:absolute" aria-hidden="true" focusable="false">
+        <symbol id="esquina-deco" viewBox="0 0 96 96">
+          <g fill="none" stroke="#D8C5A5" stroke-linejoin="miter">
+            <polyline points="30,8.5 87.5,8.5 87.5,66" stroke-width="1"/>
+            <polyline points="48,16.5 72,16.5 72,24.5 79.5,24.5 79.5,48" stroke-width=".8" opacity=".75"/>
+            <g stroke-width=".7" opacity=".7">
+              <line x1="70" y1="26" x2="44" y2="30"/>
+              <line x1="70" y1="26" x2="47" y2="39"/>
+              <line x1="70" y1="26" x2="53" y2="46"/>
+              <line x1="70" y1="26" x2="61" y2="51"/>
+              <line x1="70" y1="26" x2="69" y2="53"/>
+              <polyline points="44,30 47,39 53,46 61,51 69,53" stroke-width=".6"/>
+            </g>
+            <polygon points="70,21 74,26 70,31 66,26" fill="#D8C5A5" stroke="none"/>
+            <polygon points="30,5 33.5,8.5 30,12 26.5,8.5" fill="#D8C5A5" stroke="none"/>
+            <polygon points="87.5,66 91,69.5 87.5,73 84,69.5" fill="#D8C5A5" stroke="none"/>
+          </g>
+        </symbol>
+      </svg>
+    </section>
+    <!-- ============ SECCIÓN 3 · MENSAJE DEL GRADUADO ============
+         Texto, firma y fotografía: js/datos.js > mensaje.
+         El contenido de respaldo también es editable aquí, sin JavaScript. -->
+    <section class="mensaje" id="mensaje-graduado" tabindex="-1" aria-labelledby="mensaje-titulo">
+      <div class="mensaje__fondo" aria-hidden="true">
+        <div class="mensaje__luz"></div>
+        <div class="mensaje__motas" data-mensaje-motas></div>
+      </div>
+
+      <div class="mensaje__interior">
+        <!-- Adorno superior del fondo original (se omite su frase impresa) -->
+        <div class="mensaje__corona" data-revelar aria-hidden="true">
+          <img src="img/mensaje-corona.webp" alt="" width="440" height="282" decoding="async">
+          <span class="mensaje__reflejo"></span>
+        </div>
+
+        <header class="mensaje__cabecera" data-revelar>
+          <p class="mensaje__antetitulo">Ningún logro se alcanza a solas</p>
+          <h2 class="mensaje__titulo" id="mensaje-titulo">Este logro también es tuyo</h2>
+        </header>
+
+        <div class="mensaje__composicion">
+          <figure class="mensaje__retrato" data-revelar>
+            <div class="mensaje__marco">
+              <svg class="mensaje__orla" viewBox="0 0 400 500" preserveAspectRatio="none" aria-hidden="true" focusable="false">
+                <path class="mensaje__orla-ext" pathLength="1" d="M27 1 L373 1 L373 14 L386 14 L386 27 L399 27 L399 473 L386 473 L386 486 L373 486 L373 499 L27 499 L27 486 L14 486 L14 473 L1 473 L1 27 L14 27 L14 14 L27 14 Z"/>
+                <path class="mensaje__orla-int" pathLength="1" d="M30 10 L370 10 L370 20 L380 20 L380 30 L390 30 L390 470 L380 470 L380 480 L370 480 L370 490 L30 490 L30 480 L20 480 L20 470 L10 470 L10 30 L20 30 L20 20 L30 20 Z"/>
+              </svg>
+              <span class="mensaje__rombo mensaje__rombo--sup" aria-hidden="true"></span>
+              <span class="mensaje__rombo mensaje__rombo--inf" aria-hidden="true"></span>
+              <div class="mensaje__imagen">
+                <div class="mensaje__reserva" data-foto-reserva>
+                  <span class="mensaje__reserva-rombo" aria-hidden="true"></span>
+                  <p>Fotografía del graduado</p>
+                </div>
+                <img class="mensaje__foto" data-mensaje-foto alt="Fotografía del graduado" width="720" height="900" decoding="async" hidden>
+              </div>
+            </div>
+          </figure>
+
+          <div class="mensaje__carta" data-revelar>
+            <div class="mensaje__parrafos" data-mensaje-parrafos>
+              <p>Hoy celebro mucho más que el final de una etapa: celebro cada esfuerzo, cada aprendizaje y a quienes caminaron conmigo.</p>
+              <p>Gracias por acompañarme, por creer en mí y por darme ánimo para seguir adelante. En este logro también están tu cariño y tu apoyo.</p>
+              <p>Me hará muy feliz compartir contigo esta noche, recordar el camino recorrido y brindar por todo lo que está por venir.</p>
+            </div>
+            <div class="mensaje__firma">
+              <span class="mensaje__separador" aria-hidden="true"><i></i></span>
+              <p class="mensaje__despedida" data-mensaje-despedida>Con cariño,</p>
+              <p class="mensaje__nombre" data-mensaje-nombre>[Nombre del graduado]</p>
+            </div>
+          </div>
+        </div>
+      </div>
+
+      <!-- Adorno inferior del fondo original; las líneas se prolongan hasta los bordes -->
+      <div class="mensaje__cierre" data-revelar aria-hidden="true">
+        <span class="mensaje__ala mensaje__ala--izq"></span>
+        <div class="mensaje__base">
+          <img src="img/mensaje-base.webp" alt="" width="941" height="250" decoding="async">
+          <span class="mensaje__reflejo"></span>
+        </div>
+        <span class="mensaje__ala mensaje__ala--der"></span>
+      </div>
+    </section>
+    <!-- ============ SECCIÓN 4 · CUENTA REGRESIVA ============ -->
+    <section class="cuenta" id="cuenta-regresiva" aria-labelledby="cuenta-titulo">
+      <div class="cuenta__ambiente" aria-hidden="true"></div>
+      <div class="cuenta__lluvia" data-cuenta-lluvia aria-hidden="true"></div>
+      <!-- Birretes y confeti del fondo (recortes de img/cuenta-piezas.webp) -->
+      <div class="cuenta__cielo" data-cuenta-escena aria-hidden="true">
+        <span class="cuenta__pieza cuenta__pieza--confeti" style="--cx:35;--y:133;--w:30;--h:35;--ax:158;--ay:121;--d:0.27s;--t:8.9s;--ex:0.77;--ey:0.31;--g0:-180deg"><i></i></span>
+        <span class="cuenta__pieza cuenta__pieza--confeti" style="--cx:38;--y:14;--w:29;--h:28;--ax:368;--ay:121;--d:0.64s;--t:8.9s;--ex:0.62;--ey:0.89;--g0:-127deg"><i></i></span>
+        <span class="cuenta__pieza cuenta__pieza--birrete" style="--cx:82;--y:12;--w:97;--h:113;--ax:4;--ay:4;--d:1.06s;--t:5.9s;--r:3.1deg;--g0:-18deg"><i></i></span>
+        <span class="cuenta__pieza cuenta__pieza--confeti" style="--cx:210;--y:50;--w:37;--h:39;--ax:79;--ay:121;--d:0.21s;--t:8.5s;--ex:0.44;--ey:0.61;--g0:142deg"><i></i></span>
+        <span class="cuenta__pieza cuenta__pieza--birrete" style="--cx:280;--y:91;--w:100;--h:92;--ax:197;--ay:4;--d:0.73s;--t:5.8s;--r:4.3deg;--g0:-15deg"><i></i></span>
+        <span class="cuenta__pieza cuenta__pieza--confeti" style="--cx:356;--y:24;--w:32;--h:31;--ax:265;--ay:121;--d:1.15s;--t:10.7s;--ex:0.38;--ey:0.54;--g0:-125deg"><i></i></span>
+        <span class="cuenta__pieza cuenta__pieza--birrete" style="--cx:470;--y:7;--w:108;--h:82;--ax:301;--ay:4;--d:0.39s;--t:7.2s;--r:4.4deg;--g0:-21deg"><i></i></span>
+        <span class="cuenta__pieza cuenta__pieza--confeti" style="--cx:622;--y:95;--w:29;--h:30;--ax:335;--ay:121;--d:0.67s;--t:5.5s;--ex:0.73;--ey:0.73;--g0:117deg"><i></i></span>
+        <span class="cuenta__pieza cuenta__pieza--birrete" style="--cx:694;--y:82;--w:71;--h:73;--ax:4;--ay:121;--d:1.01s;--t:5.6s;--r:3.8deg;--g0:-26deg"><i></i></span>
+        <span class="cuenta__pieza cuenta__pieza--confeti" style="--cx:732;--y:28;--w:34;--h:36;--ax:120;--ay:121;--d:0.35s;--t:7.1s;--ex:0.55;--ey:0.75;--g0:74deg"><i></i></span>
+        <span class="cuenta__pieza cuenta__pieza--confeti" style="--cx:788;--y:95;--w:32;--h:34;--ax:192;--ay:121;--d:0.61s;--t:7.2s;--ex:0.66;--ey:0.85;--g0:-63deg"><i></i></span>
+        <span class="cuenta__pieza cuenta__pieza--birrete" style="--cx:875;--y:20;--w:88;--h:104;--ax:105;--ay:4;--d:1.13s;--t:6.8s;--r:3.3deg;--g0:-22deg"><i></i></span>
+        <span class="cuenta__pieza cuenta__pieza--confeti" style="--cx:902;--y:173;--w:33;--h:34;--ax:228;--ay:121;--d:0.2s;--t:6.2s;--ex:0.73;--ey:0.8;--g0:-81deg"><i></i></span>
+      </div>
+
+      <div class="cuenta__contenido">
+        <header class="cuenta__cabecera" data-cuenta-revelar>
+          <svg class="cuenta__abanico" viewBox="0 0 100 44" aria-hidden="true" focusable="false">
+            <g fill="none" stroke="currentColor" stroke-width=".85" stroke-linejoin="round">
+              <path pathLength="100" d="M50 40 9 13 22 8 50 40 36 3 50 1 64 3 50 40 78 8 91 13Z"/>
+              <path pathLength="100" d="M50 40 22 8 M50 40 36 3 M50 40 64 3 M50 40 78 8"/>
+              <path pathLength="100" d="M44 41 H56"/>
+            </g>
+          </svg>
+          <p class="cuenta__antetitulo">LA GRAN NOCHE SE ACERCA</p>
+          <h2 class="cuenta__titulo" id="cuenta-titulo">Cada vez falta menos</h2>
+        </header>
+
+        <div class="cuenta__principal" data-cuenta-revelar>
+          <div class="cuenta__estado" data-cuenta-estado role="status">La fecha de nuestra gran noche se anunciará pronto</div>
+          <div class="cuenta__marcadores" data-cuenta-marcadores aria-hidden="true" hidden>
+            <div class="cuenta__unidad">
+              <svg class="cuenta__orla" viewBox="0 0 200 200" preserveAspectRatio="none" aria-hidden="true"><path d="M23 1 H177 V12 H188 V23 H199 V177 H188 V188 H177 V199 H23 V188 H12 V177 H1 V23 H12 V12 H23 Z M29 9 H171 V20 H180 V29 H191 V171 H180 V180 H171 V191 H29 V180 H20 V171 H9 V29 H20 V20 H29 Z"/></svg>
+              <span class="cuenta__numero" data-cuenta-dias>00</span><span class="cuenta__etiqueta">Días</span>
+            </div>
+            <div class="cuenta__unidad">
+              <svg class="cuenta__orla" viewBox="0 0 200 200" preserveAspectRatio="none" aria-hidden="true"><path d="M23 1 H177 V12 H188 V23 H199 V177 H188 V188 H177 V199 H23 V188 H12 V177 H1 V23 H12 V12 H23 Z M29 9 H171 V20 H180 V29 H191 V171 H180 V180 H171 V191 H29 V180 H20 V171 H9 V29 H20 V20 H29 Z"/></svg>
+              <span class="cuenta__numero" data-cuenta-horas>00</span><span class="cuenta__etiqueta">Horas</span>
+            </div>
+            <div class="cuenta__unidad">
+              <svg class="cuenta__orla" viewBox="0 0 200 200" preserveAspectRatio="none" aria-hidden="true"><path d="M23 1 H177 V12 H188 V23 H199 V177 H188 V188 H177 V199 H23 V188 H12 V177 H1 V23 H12 V12 H23 Z M29 9 H171 V20 H180 V29 H191 V171 H180 V180 H171 V191 H29 V180 H20 V171 H9 V29 H20 V20 H29 Z"/></svg>
+              <span class="cuenta__numero" data-cuenta-minutos>00</span><span class="cuenta__etiqueta">Minutos</span>
+            </div>
+            <div class="cuenta__unidad">
+              <svg class="cuenta__orla" viewBox="0 0 200 200" preserveAspectRatio="none" aria-hidden="true"><path d="M23 1 H177 V12 H188 V23 H199 V177 H188 V188 H177 V199 H23 V188 H12 V177 H1 V23 H12 V12 H23 Z M29 9 H171 V20 H180 V29 H191 V171 H180 V180 H171 V191 H29 V180 H20 V171 H9 V29 H20 V20 H29 Z"/></svg>
+              <span class="cuenta__numero" data-cuenta-segundos>00</span><span class="cuenta__etiqueta">Segundos</span>
+            </div>
+          </div>
+          <p class="cuenta__lectura" data-cuenta-fecha></p>
+        </div>
+
+        <footer class="cuenta__pie" data-cuenta-revelar>
+          <span class="cuenta__separador" aria-hidden="true"><i></i></span>
+          <p data-cuenta-frase>Pronto brindaremos por los sueños cumplidos y los que están por comenzar</p>
+        </footer>
+      </div>
+      <!-- ============ SECCIÓN 5 · CUÁNDO Y DÓNDE ============
+           Comparte el fondo y el cierre gráfico de la cuenta regresiva. -->
+      <section class="cuando" id="cuando-donde" aria-labelledby="cuando-titulo">
+        <div class="cuando__interior">
+          <header class="cuando__cabecera" data-cuando-revelar>
+            <span class="cuando__division" aria-hidden="true"><i></i></span>
+            <p class="cuando__antetitulo">TENEMOS UNA CITA</p>
+            <h2 class="cuando__titulo" id="cuando-titulo">El lugar de nuestra celebración</h2>
+            <p class="cuando__introduccion">Será un honor compartir contigo este momento</p>
+          </header>
+
+          <div class="cuando__tarjetas" data-cuando-tarjetas>
+            <article class="cuando__tarjeta" data-cuando-evento="ceremonia" data-cuando-revelar aria-labelledby="cuando-ceremonia-titulo">
+              <div class="cuando__tarjeta-interior">
+                <svg class="cuando__icono" viewBox="0 0 64 64" aria-hidden="true" focusable="false"><g fill="none" stroke="currentColor" stroke-width="1.2" stroke-linecap="round" stroke-linejoin="round"><path d="M4 24 32 12l28 12-28 12L4 24Z M15 29v11c10 8 24 8 34 0V29 M60 24v20 M57 44h6l2 8h-10l2-8Z"/></g></svg>
+                <p class="cuando__tipo" id="cuando-ceremonia-titulo">Ceremonia de graduación</p>
+                <h3 class="cuando__lugar" data-cuando-campo="lugar">[Nombre de la institución o recinto]</h3>
+                <figure class="cuando__foto" data-cuando-foto hidden><img alt="" loading="lazy" decoding="async"></figure>
+                <div class="cuando__datos">
+                  <p class="cuando__dato cuando__dato--fecha" data-cuando-campo="fecha">[Fecha de la ceremonia]</p>
+                  <p class="cuando__dato cuando__dato--hora" data-cuando-campo="hora">[Hora de la ceremonia]</p>
+                  <p class="cuando__direccion" data-cuando-campo="direccion">[Dirección completa]</p>
+                </div>
+                <a class="cuando__enlace" data-cuando-mapa href="#" target="_blank" rel="noopener noreferrer" aria-label="Cómo llegar a la ceremonia" hidden>Cómo llegar <span aria-hidden="true">↗</span></a>
+              </div>
+            </article>
+
+            <article class="cuando__tarjeta" data-cuando-evento="recepcion" data-cuando-revelar aria-labelledby="cuando-recepcion-titulo">
+              <div class="cuando__tarjeta-interior">
+                <svg class="cuando__icono" viewBox="0 0 64 64" aria-hidden="true" focusable="false"><g fill="none" stroke="currentColor" stroke-width="1.2" stroke-linecap="round" stroke-linejoin="round"><path d="M8 10h19l-2 18c-.5 5-4 8-7.5 8S10.5 33 10 28L8 10Z M37 10h19l-2 18c-.5 5-4 8-7.5 8S39.5 33 39 28l-2-18Z M18 36v14 M47 36v14 M10 50h16 M39 50h16 M10 22h15 M39 22h15"/></g></svg>
+                <p class="cuando__tipo" id="cuando-recepcion-titulo">Recepción y gala</p>
+                <h3 class="cuando__lugar" data-cuando-campo="lugar">[Nombre del salón o recinto]</h3>
+                <figure class="cuando__foto" data-cuando-foto hidden><img alt="" loading="lazy" decoding="async"></figure>
+                <div class="cuando__datos">
+                  <p class="cuando__dato cuando__dato--fecha" data-cuando-campo="fecha">[Fecha de la celebración]</p>
+                  <p class="cuando__dato cuando__dato--hora" data-cuando-campo="hora">[Hora de recepción]</p>
+                  <p class="cuando__direccion" data-cuando-campo="direccion">[Dirección completa]</p>
+                </div>
+                <a class="cuando__enlace" data-cuando-mapa href="#" target="_blank" rel="noopener noreferrer" aria-label="Cómo llegar a la recepción" hidden>Cómo llegar <span aria-hidden="true">↗</span></a>
+              </div>
+            </article>
+
+            <article class="cuando__tarjeta cuando__tarjeta--compartida" data-cuando-evento="compartido" data-cuando-revelar aria-labelledby="cuando-compartido-titulo" hidden>
+              <div class="cuando__tarjeta-interior">
+                <svg class="cuando__icono" viewBox="0 0 64 64" aria-hidden="true" focusable="false"><g fill="none" stroke="currentColor" stroke-width="1.2" stroke-linecap="round" stroke-linejoin="round"><path d="M4 21 26 11l22 10-22 10L4 21Z M13 26v9c8 6 18 6 26 0v-9 M48 21v14 M45 35h6l2 7h-10l2-7Z M41 47h16l-1 8c-.2 3-3 5-7 5s-6.8-2-7-5l-1-8Z"/></g></svg>
+                <p class="cuando__tipo" id="cuando-compartido-titulo">Ceremonia y recepción</p>
+                <h3 class="cuando__lugar" data-cuando-campo="lugar">[Nombre del recinto]</h3>
+                <figure class="cuando__foto" data-cuando-foto hidden><img alt="" loading="lazy" decoding="async"></figure>
+                <div class="cuando__horarios">
+                  <div><p class="cuando__horario-tipo">Ceremonia de graduación</p><p class="cuando__dato" data-cuando-campo="ceremonia-fecha">[Fecha de la ceremonia]</p><p class="cuando__dato cuando__dato--hora" data-cuando-campo="ceremonia-hora">[Hora de la ceremonia]</p></div>
+                  <div><p class="cuando__horario-tipo">Recepción y gala</p><p class="cuando__dato" data-cuando-campo="recepcion-fecha">[Fecha de la celebración]</p><p class="cuando__dato cuando__dato--hora" data-cuando-campo="recepcion-hora">[Hora de recepción]</p></div>
+                </div>
+                <p class="cuando__direccion" data-cuando-campo="direccion">[Dirección completa]</p>
+                <a class="cuando__enlace" data-cuando-mapa href="#" target="_blank" rel="noopener noreferrer" aria-label="Cómo llegar a la ceremonia y la recepción" hidden>Cómo llegar <span aria-hidden="true">↗</span></a>
+              </div>
+            </article>
+          </div>
+          <p class="cuando__zona" data-cuando-zona hidden></p>
+        </div>
+      </section>
+      <!-- Cordillera de facetas: la pieza central y dos copias en espejo -->
+      <div class="cuenta__facetas" data-cuenta-escena aria-hidden="true">
+        <div class="cuenta__cordillera">
+          <span class="cuenta__faceta cuenta__faceta--izq"></span>
+          <span class="cuenta__faceta cuenta__faceta--der"></span>
+          <span class="cuenta__faceta"></span>
+          <span class="cuenta__pieza cuenta__pieza--confeti cuenta__pieza--pie" style="--x:219;--y:175;--w:22;--h:24;--ax:401;--ay:121;--d:1.1s;--t:8.8s;--ex:0.42;--ey:0.49;--g0:120deg"><i></i></span>
+          <span class="cuenta__pieza cuenta__pieza--birrete cuenta__pieza--pie" style="--x:761;--y:183;--w:86;--h:76;--ax:413;--ay:4;--d:1.28s;--t:7.2s;--r:3deg;--g0:-18deg"><i></i></span>
+          <span class="cuenta__pieza cuenta__pieza--confeti cuenta__pieza--pie" style="--x:889;--y:149;--w:30;--h:31;--ax:301;--ay:121;--d:1.46s;--t:8.4s;--ex:0.84;--ey:0.66;--g0:120deg"><i></i></span>
+          <span class="cuenta__pieza cuenta__pieza--confeti cuenta__pieza--pie" style="--x:859;--y:220;--w:21;--h:20;--ax:427;--ay:121;--d:1.64s;--t:6.8s;--ex:0.57;--ey:0.63;--g0:120deg"><i></i></span>
+        </div>
+      </div>
+    </section>
+    <!-- ============ SECCIÓN 6 · PROGRAMA DE LA NOCHE ============ -->
+    <section class="programa" id="programa-noche" aria-labelledby="programa-titulo">
+      <!-- Fondo: columna de medallones, rayos de luz y escalinata (recortes de tu arte) -->
+      <div class="programa__columna" data-programa-escena aria-hidden="true">
+        <div class="programa__columna-cuerpo">
+          <span class="programa__segundero"></span>
+          <span class="programa__destello" style="--x:62;--y:157;--d:0s"></span>
+          <span class="programa__destello" style="--x:62;--y:199;--d:1.3s"></span>
+          <span class="programa__destello" style="--x:64;--y:520;--d:2.4s"></span>
+          <span class="programa__destello" style="--x:64;--y:843;--d:.7s"></span>
+          <span class="programa__destello" style="--x:64;--y:1157;--d:3.1s"></span>
+          <span class="programa__destello" style="--x:57;--y:1398;--d:1.9s"></span>
+        </div>
+      </div>
+      <div class="programa__rayos" data-programa-escena aria-hidden="true">
+        <span class="programa__polvo" data-programa-polvo></span>
+      </div>
+      <div class="programa__escena" data-programa-escena aria-hidden="true">
+        <span class="programa__notas" data-programa-notas></span>
+        <span class="programa__destello" style="--x:480;--y:53;--d:.4s"></span>
+        <span class="programa__destello" style="--x:461;--y:110;--d:2.2s"></span>
+      </div>
+
+      <svg class="programa__simbolos" width="0" height="0" aria-hidden="true" focusable="false">
+        <symbol id="programa-icono-puertas" viewBox="0 0 48 48"><g fill="none" stroke="currentColor" stroke-width="1.4" stroke-linecap="round" stroke-linejoin="round"><path d="M5 40V9l17-4v35M43 40V9L26 5v35M22 5l4 0M5 40h38M10 24h2m26 0h-2M17 13l-7 4m21-4 7 4"/></g></symbol>
+        <symbol id="programa-icono-cubiertos" viewBox="0 0 48 48"><g fill="none" stroke="currentColor" stroke-width="1.4" stroke-linecap="round" stroke-linejoin="round"><path d="M8 5v13m5-13v13m5-13v13M8 18c0 4 2 6 5 6s5-2 5-6M13 24v19M32 43V5c-6 5-8 12-8 20h8M32 25v18"/></g></symbol>
+        <symbol id="programa-icono-copas" viewBox="0 0 48 48"><g fill="none" stroke="currentColor" stroke-width="1.4" stroke-linecap="round" stroke-linejoin="round"><path d="M5 7h17l-2 14c-.5 4-3 7-6.5 7S7.5 25 7 21L5 7Zm21 0h17l-2 14c-.5 4-3 7-6.5 7S28.5 25 28 21L26 7ZM13.5 28v11m21-11v11M7 40h13m8 0h13M7 16h14m7 0h14"/></g></symbol>
+        <symbol id="programa-icono-musica" viewBox="0 0 48 48"><g fill="none" stroke="currentColor" stroke-width="1.4" stroke-linecap="round" stroke-linejoin="round"><path d="M17 34V9l24-4v25M17 13l24-4M17 34c-2-2-7-1-9 1-3 3-1 7 3 7 3 0 6-2 6-5v-3Zm24-4c-2-2-7-1-9 1-3 3-1 7 3 7 3 0 6-2 6-5v-3Z"/></g></symbol>
+        <symbol id="programa-icono-reloj" viewBox="0 0 48 48"><g fill="none" stroke="currentColor" stroke-width="1.4" stroke-linecap="round" stroke-linejoin="round"><circle cx="24" cy="24" r="18"/><path d="M24 12v13l8 5M24 6v3M24 39v3M6 24h3m30 0h3"/></g></symbol>
+        <symbol id="programa-icono-rombo" viewBox="0 0 48 48"><g fill="none" stroke="currentColor" stroke-width="1.4"><path d="M24 4 44 24 24 44 4 24 24 4Zm0 7 13 13-13 13-13-13 13-13Z"/></g></symbol>
+      </svg>
+
+      <div class="programa__contenido">
+        <header class="programa__cabecera" data-programa-revelar>
+          <span class="programa__detalle" aria-hidden="true"><i></i></span>
+          <p class="programa__antetitulo">UNA NOCHE PARA RECORDAR</p>
+          <h2 class="programa__titulo" id="programa-titulo">Así celebraremos</h2>
+          <p class="programa__introduccion">Cada momento será más especial contigo</p>
+        </header>
+
+        <ol class="programa__lista" data-programa-lista>
+          <li class="programa__actividad" data-programa-revelar><div class="programa__tiempo"><p class="programa__hora">20:30<span> h</span></p></div><span class="programa__medalla" aria-hidden="true"><svg class="programa__icono"><use href="#programa-icono-puertas"/></svg></span><div class="programa__texto"><h3 class="programa__nombre">Recepción</h3><p class="programa__descripcion">Bienvenidos a una noche muy especial</p></div></li>
+          <li class="programa__actividad" data-programa-revelar><div class="programa__tiempo"><p class="programa__hora">21:30<span> h</span></p></div><span class="programa__medalla" aria-hidden="true"><svg class="programa__icono"><use href="#programa-icono-cubiertos"/></svg></span><div class="programa__texto"><h3 class="programa__nombre">Cena</h3><p class="programa__descripcion">Compartamos la mesa y celebremos este logro</p></div></li>
+          <li class="programa__actividad" data-programa-revelar><div class="programa__tiempo"><p class="programa__hora">23:00<span> h</span></p></div><span class="programa__medalla" aria-hidden="true"><svg class="programa__icono"><use href="#programa-icono-copas"/></svg></span><div class="programa__texto"><h3 class="programa__nombre">Brindis</h3><p class="programa__descripcion">Por lo vivido y por todo lo que viene</p></div></li>
+          <li class="programa__actividad" data-programa-revelar><div class="programa__tiempo"><p class="programa__hora">23:30<span> h</span></p></div><span class="programa__medalla" aria-hidden="true"><svg class="programa__icono"><use href="#programa-icono-musica"/></svg></span><div class="programa__texto"><h3 class="programa__nombre">Baile</h3><p class="programa__descripcion">Es momento de celebrar en la pista</p></div></li>
+          <li class="programa__actividad" data-programa-revelar><div class="programa__tiempo"><p class="programa__hora">03:00<span> h</span></p><span class="programa__nota">Día siguiente</span></div><span class="programa__medalla" aria-hidden="true"><svg class="programa__icono"><use href="#programa-icono-reloj"/></svg></span><div class="programa__texto"><h3 class="programa__nombre">Cierre de la celebración</h3><p class="programa__descripcion">Gracias por ser parte de este recuerdo</p></div></li>
+        </ol>
+
+        <p class="programa__zona" data-programa-zona hidden></p>
+        <span class="programa__remate" aria-hidden="true"><i></i></span>
+      </div>
+    </section>
+
+    <!-- ============ SECCIÓN 7 · CÓDIGO DE VESTIMENTA ============ -->
+    <section class="vestimenta" id="codigo-vestimenta" aria-labelledby="vestimenta-titulo">
+      <!-- Fondo: marco superior, esmoquin y vestido (recortes de tu arte) -->
+      <div class="vestimenta__marco" data-vestimenta-escena aria-hidden="true">
+        <span class="vestimenta__esquina"></span>
+        <span class="vestimenta__esquina vestimenta__esquina--der"></span>
+        <span class="vestimenta__banda"></span>
+      </div>
+      <div class="vestimenta__figura vestimenta__figura--traje" data-vestimenta-escena aria-hidden="true"></div>
+      <div class="vestimenta__figura vestimenta__figura--vestido" data-vestimenta-escena aria-hidden="true"></div>
+      <div class="vestimenta__burbujas" data-vestimenta-burbujas aria-hidden="true"></div>
+
+      <div class="vestimenta__contenido">
+        <header class="vestimenta__cabecera" data-vestimenta-revelar>
+          <p class="vestimenta__antetitulo" data-vestimenta-campo="antetitulo">UNA OCASIÓN ESPECIAL</p>
+          <h2 class="vestimenta__titulo" id="vestimenta-titulo" data-vestimenta-campo="titulo">Código de vestimenta</h2>
+        </header>
+
+        <div class="vestimenta__codigo" data-vestimenta-revelar>
+          <svg class="vestimenta__abanico" viewBox="0 0 120 52" aria-hidden="true" focusable="false">
+            <g fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round">
+              <path pathLength="1" d="M10 48 A50 50 0 0 1 110 48"/>
+              <path pathLength="1" d="M26 48 A34 34 0 0 1 94 48"/>
+              <path pathLength="1" d="M60 48 L60 4 M60 48 L29 13 M60 48 L91 13 M60 48 L14 31 M60 48 L106 31"/>
+              <path pathLength="1" d="M4 48 H116"/>
+            </g>
+            <g fill="currentColor"><path d="M60 0 63 4 60 8 57 4Z"/><path d="M60 44 64 48 60 52 56 48Z"/></g>
+          </svg>
+          <p class="vestimenta__gala"><span class="vestimenta__lectura">Código: </span><span data-vestimenta-campo="codigo">Gala</span></p>
+          <p class="vestimenta__frase" data-vestimenta-campo="frase">Celebremos con el estilo que esta gran noche merece</p>
+        </div>
+
+        <ul class="vestimenta__referencias" data-vestimenta-referencias>
+          <li class="vestimenta__referencia" data-vestimenta-revelar data-vestimenta-dibujo="vestido">
+            <svg class="vestimenta__dibujo" viewBox="0 0 140 236" aria-hidden="true" focusable="false">
+              <g class="vestimenta__arco" fill="none" stroke="currentColor" stroke-linecap="round">
+                <path pathLength="1" d="M16 226 V74 A54 54 0 0 1 124 74 V226"/>
+                <path pathLength="1" d="M8 226 H132 M22 232 H118"/>
+              </g>
+              <g class="vestimenta__prenda" fill="none" stroke="currentColor" stroke-linecap="round" stroke-linejoin="round">
+                <path pathLength="1" d="M70 20 C70 15 64 15 64 10 C64 5 70 4 72 7 M70 20 L44 32 H96 L70 20"/>
+                <path pathLength="1" d="M55 32 L58 50 M85 32 L82 50"/>
+                <path pathLength="1" d="M58 50 L70 68 L82 50"/>
+                <path pathLength="1" d="M58 50 C54 60 55 72 60 82 M82 50 C86 60 85 72 80 82"/>
+                <path pathLength="1" d="M60 82 Q70 85 80 82 M60 87 Q70 90 80 87"/>
+                <path pathLength="1" d="M60 87 C58 128 46 178 26 220 Q48 228 70 226 Q94 228 116 220 C96 178 83 128 80 87"/>
+                <path class="vestimenta__pliegue" pathLength="1" d="M66 89 C64 136 56 184 48 224 M74 89 C77 136 85 184 94 225 M70 90 V226"/>
+                <path pathLength="1" d="M70 81 L73 84.5 L70 88 L67 84.5 Z"/>
+              </g>
+            </svg>
+            <h3 class="vestimenta__nombre">Vestido largo</h3>
+            <p class="vestimenta__texto">Una opción elegante para acompañarnos en esta celebración</p>
+          </li>
+          <li class="vestimenta__referencia" data-vestimenta-revelar data-vestimenta-dibujo="traje">
+            <svg class="vestimenta__dibujo" viewBox="0 0 140 236" aria-hidden="true" focusable="false">
+              <g class="vestimenta__arco" fill="none" stroke="currentColor" stroke-linecap="round">
+                <path pathLength="1" d="M16 226 V74 A54 54 0 0 1 124 74 V226"/>
+                <path pathLength="1" d="M8 226 H132 M22 232 H118"/>
+              </g>
+              <g class="vestimenta__prenda" fill="none" stroke="currentColor" stroke-linecap="round" stroke-linejoin="round">
+                <path pathLength="1" d="M70 20 C70 15 64 15 64 10 C64 5 70 4 72 7 M70 20 L44 32 H96 L70 20"/>
+                <path pathLength="1" d="M60 30 L44 36 C38 80 37 140 40 196 L67 200 M80 30 L96 36 C102 80 103 140 100 196 L73 200"/>
+                <path pathLength="1" d="M44 36 C34 70 32 140 36 186 M96 36 C106 70 108 140 104 186"/>
+                <path pathLength="1" d="M61 29 L53 46 L61 54 L70 112 M79 29 L87 46 L79 54 L70 112"/>
+                <path pathLength="1" d="M62 29 L70 40 L78 29"/>
+                <path pathLength="1" d="M70 44 L62 39 V49 Z M70 44 L78 39 V49 Z"/>
+                <path class="vestimenta__pliegue" pathLength="1" d="M70 50 V110 M70 112 L67 200 M70 112 L73 200"/>
+                <circle pathLength="1" cx="70" cy="62" r="1.3"/><circle pathLength="1" cx="70" cy="74" r="1.3"/><circle pathLength="1" cx="70" cy="86" r="1.3"/>
+                <circle pathLength="1" cx="67.5" cy="124" r="2"/>
+                <path pathLength="1" d="M83 72 H95 M84 72 L87 66 L90 71 L92.5 67 L95 72"/>
+                <path pathLength="1" d="M47 140 H62 M78 140 H93"/>
+              </g>
+            </svg>
+            <h3 class="vestimenta__nombre">Traje formal</h3>
+            <p class="vestimenta__texto">Con camisa, corbata o moño y calzado de vestir</p>
+          </li>
+        </ul>
+
+        <aside class="vestimenta__reserva" data-vestimenta-reserva aria-labelledby="vestimenta-reserva-titulo" hidden>
+          <span class="vestimenta__detalle" aria-hidden="true"><i></i></span>
+          <h3 class="vestimenta__reserva-titulo" id="vestimenta-reserva-titulo">Un detalle a considerar</h3>
+          <p class="vestimenta__reserva-texto" data-vestimenta-reserva-texto></p>
+          <ul class="vestimenta__muestras" data-vestimenta-muestras></ul>
+        </aside>
+      </div>
+    </section>
+    <!-- ============ SECCIÓN 8 · GALERÍA DE RECUERDOS ============
+         La lista de abajo es la configuración única de las fotografías.
+         Con la lista vacía, esta sección no aparece en la invitación. -->
+    <section class="galeria" id="galeria-recuerdos" aria-labelledby="galeria-titulo">
+      <!-- Fondo: polaroids, birrete y cámara separados de tu arte. Las cuatro fotos
+           de las polaroid se eligen en js/datos.js → galeria.polaroids. -->
+      <div class="galeria__fondo" aria-hidden="true">
+        <div class="galeria__esquina galeria__esquina--sup" data-galeria-escena>
+          <span class="galeria__lineas galeria__lineas--sup"></span>
+          <div class="galeria__grupo galeria__grupo--sup">
+            <div class="galeria__fotos">
+              <img class="galeria__foto galeria__foto--1" data-galeria-polaroid="1" src="img/recuerdos/01-birretes.jpg" alt="" loading="lazy" decoding="async" style="object-position:45% 50%">
+              <img class="galeria__foto galeria__foto--2" data-galeria-polaroid="2" src="img/recuerdos/03-grupo.jpg" alt="" loading="lazy" decoding="async" style="object-position:50% 62%">
+            </div>
+            <img class="galeria__polaroids" src="img/galeria-polaroids-sup.webp" alt="" width="315" height="306" decoding="async">
+            <span class="galeria__borla"><img src="img/galeria-borla.webp" alt="" width="44" height="114" decoding="async"></span>
+          </div>
+        </div>
+        <div class="galeria__esquina galeria__esquina--inf" data-galeria-escena>
+          <span class="galeria__lineas galeria__lineas--inf"></span>
+          <div class="galeria__grupo galeria__grupo--inf">
+            <div class="galeria__fotos">
+              <img class="galeria__foto galeria__foto--4" data-galeria-polaroid="4" src="img/recuerdos/05-estudio.jpg" alt="" loading="lazy" decoding="async" style="object-position:60% 50%">
+              <img class="galeria__foto galeria__foto--3" data-galeria-polaroid="3" src="img/recuerdos/07-ceremonia.jpg" alt="" loading="lazy" decoding="async" style="object-position:50% 40%">
+            </div>
+            <img class="galeria__polaroids" src="img/galeria-polaroids-inf.webp" alt="" width="469" height="368" decoding="async">
+            <span class="galeria__flash"></span>
+            <span class="galeria__brillo"></span>
+          </div>
+        </div>
+        <div class="galeria__polvo" data-galeria-polvo></div>
+      </div>
+      <div class="galeria__contenido">
+        <header class="galeria__cabecera" data-galeria-revelar>
+          <span class="galeria__detalle" aria-hidden="true"><i></i></span>
+          <p class="galeria__antetitulo">EL CAMINO HASTA AQUÍ</p>
+          <h2 class="galeria__titulo" id="galeria-titulo">Recuerdos que me acompañan</h2>
+          <p class="galeria__frase">Detrás de este logro hay momentos y personas que siempre llevaré conmigo</p>
+          <p class="galeria__aviso">Fotografías de muestra <span aria-hidden="true">◆</span> Reemplazables por tus recuerdos</p>
+        </header>
+
+        <!-- Configuración editable de la galería demostrativa: ruta, texto alternativo,
+             dimensiones y encuadre en cada elemento. El enlace funciona sin JavaScript. -->
+        <ol class="galeria__lista" data-galeria-lista>
+          <li class="galeria__item" data-formato="horizontal">
+            <figure><a class="galeria__archivo" href="img/recuerdos/01-birretes.jpg" target="_blank" rel="noopener noreferrer" aria-label="Abrir fotografía de birretes al aire"><img src="img/recuerdos/01-birretes.jpg" width="1000" height="667" loading="lazy" decoding="async" alt="Graduados lanzan sus birretes al cielo al atardecer" style="object-fit:cover;object-position:50% 50%"></a><figcaption>¡Lo logramos!</figcaption></figure>
+          </li>
+          <li class="galeria__item" data-formato="vertical">
+            <figure><a class="galeria__archivo" href="img/recuerdos/03-grupo.jpg" target="_blank" rel="noopener noreferrer" aria-label="Abrir fotografía de celebración en grupo"><img src="img/recuerdos/03-grupo.jpg" width="1280" height="1923" loading="lazy" decoding="async" alt="Grupo de personas celebra lanzando birretes" style="object-fit:cover;object-position:50% 64%"></a><figcaption>Los de siempre</figcaption></figure>
+          </li>
+          <li class="galeria__item" data-formato="horizontal">
+            <figure><a class="galeria__archivo" href="img/recuerdos/04-birrete.jpg" target="_blank" rel="noopener noreferrer" aria-label="Abrir fotografía de ceremonia de graduación"><img src="img/recuerdos/04-birrete.jpg" width="1280" height="853" loading="lazy" decoding="async" alt="Birretes durante una ceremonia de graduación" style="object-fit:cover;object-position:50% 50%"></a><figcaption>El gran día</figcaption></figure>
+          </li>
+          <li class="galeria__item" data-formato="horizontal">
+            <figure><a class="galeria__archivo" href="img/recuerdos/05-estudio.jpg" target="_blank" rel="noopener noreferrer" aria-label="Abrir fotografía de estudiantes en biblioteca"><img src="img/recuerdos/05-estudio.jpg" width="1280" height="853" loading="lazy" decoding="async" alt="Estudiantes leen y trabajan en una biblioteca" style="object-fit:cover;object-position:50% 50%"></a><figcaption>Noches de estudio</figcaption></figure>
+          </li>
+          <li class="galeria__item" data-formato="horizontal">
+            <figure><a class="galeria__archivo" href="img/recuerdos/07-ceremonia.jpg" target="_blank" rel="noopener noreferrer" aria-label="Abrir fotografía de grupo de graduados"><img src="img/recuerdos/07-ceremonia.jpg" width="1280" height="853" loading="lazy" decoding="async" alt="Grupo de graduados posa con sus birretes en una ceremonia" style="object-fit:cover;object-position:50% 50%"></a><figcaption>Generación 2026</figcaption></figure>
+          </li>
+        </ol>
+        <span class="galeria__remate" aria-hidden="true"><i></i></span>
+        <p class="galeria__creditos">Imágenes de muestra: <a href="https://commons.wikimedia.org/wiki/File:Graduation_Celebration.jpg" target="_blank" rel="noopener noreferrer">STMDragons</a> y <a href="https://commons.wikimedia.org/wiki/File:Program_graduation_party.jpg" target="_blank" rel="noopener noreferrer">Lodzian</a> (<a href="https://creativecommons.org/licenses/by-sa/4.0/" target="_blank" rel="noopener noreferrer">CC BY-SA 4.0</a>); otras imágenes de Wikimedia Commons (CC0).</p>
+      </div>
+    </section>
+    <!-- ============ SECCIÓN 9 · PASE Y CONFIRMACIÓN ============
+         Textos, pase, fecha límite y número de WhatsApp: js/datos.js → confirmacion. -->
+    <section class="confirmacion" id="confirmacion" aria-labelledby="confirmacion-titulo">
+      <div class="confirmacion__fondo" aria-hidden="true">
+        <svg class="confirmacion__trazo confirmacion__trazo--izq" viewBox="0 0 90 260" data-confirmacion-escena focusable="false">
+          <defs>
+            <filter id="confirmacion-relieve" filterUnits="userSpaceOnUse" x="-1500" y="-60" width="4000" height="1800">
+              <feDropShadow dx="0" dy="1.3" stdDeviation=".9" flood-color="#00140D" flood-opacity=".6"/>
+            </filter>
+            <filter id="confirmacion-luz" filterUnits="userSpaceOnUse" x="-1500" y="-60" width="4000" height="1800">
+              <feGaussianBlur stdDeviation="2.4" result="halo"/>
+              <feMerge><feMergeNode in="halo"/><feMergeNode in="halo"/><feMergeNode in="SourceGraphic"/></feMerge>
+            </filter>
+            <radialGradient id="confirmacion-lacre" cx="40%" cy="35%" r="70%">
+              <stop offset="0" stop-color="#34322E"/>
+              <stop offset=".55" stop-color="#161615"/>
+              <stop offset="1" stop-color="#0B0C0C"/>
+            </radialGradient>
+            <radialGradient id="confirmacion-resplandor">
+              <stop offset="0" stop-color="#FFF4DA" stop-opacity=".85"/>
+              <stop offset=".45" stop-color="#E9D3AC" stop-opacity=".35"/>
+              <stop offset="1" stop-color="#E9D3AC" stop-opacity="0"/>
+            </radialGradient>
+          </defs>
+          <g class="confirmacion__lineas">
+            <path d="M38 21V248" pathLength="1"/>
+            <path d="M54 21V196" pathLength="1"/>
+            <path d="M69 41V141" pathLength="1"/>
+          </g>
+          <path class="confirmacion__pulso confirmacion__pulso--caida" d="M38 21V248" pathLength="1"/>
+        </svg>
+
+        <svg class="confirmacion__trazo confirmacion__trazo--der" viewBox="690 0 251 215" data-confirmacion-escena focusable="false">
+          <g class="confirmacion__lineas">
+            <path d="M777.6 0L963 173.7" pathLength="1"/>
+            <path d="M724.2 0L963 223.7" pathLength="1"/>
+          </g>
+          <path class="confirmacion__rombo" d="M850.5 81.5L862.5 93.5L850.5 105.5L838.5 93.5Z"/>
+          <path class="confirmacion__pulso confirmacion__pulso--diagonal" d="M724.2 0L963 223.7" pathLength="1"/>
+        </svg>
+
+        <svg class="confirmacion__trazo confirmacion__trazo--sobre" viewBox="0 1440 941 200" data-confirmacion-escena focusable="false">
+          <g class="confirmacion__lineas">
+            <path class="confirmacion__escalon" d="M336 1525.5H219.5V1552.5H141.5V1580.5H0" pathLength="1"/>
+            <path class="confirmacion__escalon" d="M336 1546.5H243.5V1572.5H165.5V1600.5H0" pathLength="1"/>
+            <path class="confirmacion__escalon" d="M604.5 1525.5H721V1552.5H799V1580.5H941" pathLength="1"/>
+            <path class="confirmacion__escalon" d="M604.5 1546.5H697V1572.5H775V1600.5H941" pathLength="1"/>
+            <path class="confirmacion__extension" d="M0 1580.5H-1400" pathLength="1"/>
+            <path class="confirmacion__extension" d="M0 1600.5H-1400" pathLength="1"/>
+            <path class="confirmacion__extension" d="M941 1580.5H2341" pathLength="1"/>
+            <path class="confirmacion__extension" d="M941 1600.5H2341" pathLength="1"/>
+            <path class="confirmacion__sobre" d="M336 1467.5H604.5V1618.5H336Z" pathLength="1"/>
+            <path class="confirmacion__solapa" d="M336 1467.5L448.5 1546" pathLength="1"/>
+            <path class="confirmacion__solapa" d="M604.5 1467.5L492 1546" pathLength="1"/>
+          </g>
+          <g class="confirmacion__pulsos">
+            <path class="confirmacion__pulso" d="M336 1525.5H219.5V1552.5H141.5V1580.5H0" pathLength="1"/>
+            <path class="confirmacion__pulso" d="M604.5 1546.5H697V1572.5H775V1600.5H941" pathLength="1"/>
+          </g>
+          <circle class="confirmacion__resplandor" cx="470" cy="1558" r="58" fill="url(#confirmacion-resplandor)"/>
+          <g class="confirmacion__sello">
+            <circle cx="470" cy="1558" r="24.5" fill="url(#confirmacion-lacre)"/>
+            <path class="confirmacion__brillo-sello" d="M455 1550a17 17 0 0 1 14-9.5"/>
+          </g>
+        </svg>
+      </div>
+
+      <div class="confirmacion__contenido">
+        <header class="confirmacion__cabecera" data-confirmacion-revelar>
+          <span class="confirmacion__detalle" aria-hidden="true"><i></i></span>
+          <p class="confirmacion__antetitulo" data-confirmacion-campo="antetitulo">TU PRESENCIA HARÁ LA DIFERENCIA</p>
+          <h2 class="confirmacion__titulo" id="confirmacion-titulo" data-confirmacion-campo="titulo">Celebra conmigo</h2>
+          <p class="confirmacion__frase" data-confirmacion-campo="frase">Me encantará compartir esta noche contigo. Confirma tu asistencia para preparar cada detalle</p>
+        </header>
+
+        <div class="confirmacion__cuerpo">
+          <article class="pase" aria-labelledby="pase-graduado" data-confirmacion-revelar>
+            <div class="pase__marco">
+              <div class="pase__interior">
+                <svg class="pase__birrete" viewBox="0 0 64 44" aria-hidden="true" focusable="false">
+                  <path d="M32 3L60 15L32 27L4 15Z" pathLength="1"/>
+                  <path d="M14 19.5V31C14 35 22 39 32 39S50 35 50 31V19.5" pathLength="1"/>
+                  <path d="M32 15L50 21V30" pathLength="1"/>
+                  <path d="M47.5 30H52.5L51 37H49Z" pathLength="1"/>
+                </svg>
+                <p class="pase__evento" data-confirmacion-campo="evento">GALA DE GRADUACIÓN</p>
+                <p class="pase__graduado" id="pase-graduado" data-confirmacion-campo="graduado">Valentina Ríos Montenegro</p>
+                <span class="pase__divisor" aria-hidden="true"><i></i></span>
+                <div class="pase__invitado" data-confirmacion-invitado hidden>
+                  <p class="pase__etiqueta">Pase para</p>
+                  <p class="pase__nombre" data-confirmacion-campo="invitado"></p>
+                </div>
+                <p class="pase__lugares" data-confirmacion-lugares hidden></p>
+                <div class="pase__talon" data-confirmacion-fecha-bloque>
+                  <p class="pase__etiqueta">Fecha del evento</p>
+                  <p class="pase__fecha"><time datetime="2026-12-12" data-confirmacion-fecha><span class="pase__dia">Sábado</span> 12 de diciembre de 2026</time></p>
+                </div>
+              </div>
+            </div>
+          </article>
+
+          <form class="confirmacion__formulario" aria-label="Confirmación de asistencia" novalidate data-confirmacion-formulario data-confirmacion-revelar>
+            <div class="campo">
+              <label class="campo__etiqueta" for="confirmacion-nombre">Nombre del invitado</label>
+              <input class="campo__control" id="confirmacion-nombre" name="nombre" type="text" autocomplete="name" required aria-describedby="confirmacion-nombre-error">
+              <p class="campo__error" id="confirmacion-nombre-error" hidden></p>
+            </div>
+
+            <fieldset class="campo campo--respuesta">
+              <legend class="campo__etiqueta">Tu respuesta</legend>
+              <div class="opciones">
+                <label class="opcion">
+                  <input type="radio" name="respuesta" value="si" required aria-describedby="confirmacion-respuesta-error">
+                  <span class="opcion__marca" aria-hidden="true"></span>
+                  <span class="opcion__texto">Sí, asistiré</span>
+                </label>
+                <label class="opcion">
+                  <input type="radio" name="respuesta" value="no" aria-describedby="confirmacion-respuesta-error">
+                  <span class="opcion__marca" aria-hidden="true"></span>
+                  <span class="opcion__texto">No podré asistir</span>
+                </label>
+              </div>
+              <p class="campo__error" id="confirmacion-respuesta-error" hidden></p>
+            </fieldset>
+
+            <div class="campo" data-confirmacion-asistentes hidden>
+              <label class="campo__etiqueta" for="confirmacion-asistentes">Número de asistentes</label>
+              <select class="campo__control" id="confirmacion-asistentes" name="asistentes" aria-describedby="confirmacion-asistentes-ayuda"></select>
+              <p class="campo__ayuda" id="confirmacion-asistentes-ayuda">Contándote a ti</p>
+            </div>
+
+            <p class="confirmacion__limite" data-confirmacion-limite hidden></p>
+            <button class="confirmacion__enviar" type="submit" disabled data-confirmacion-enviar>
+              <svg viewBox="0 0 24 24" aria-hidden="true" focusable="false"><path d="M12 3a9 9 0 0 0-7.8 13.5L3 21l4.6-1.2A9 9 0 1 0 12 3Z"/><path d="M8.6 8.4c.2-.5.5-.5.8-.5h.5c.2 0 .4 0 .5.4l.7 1.7c.1.2 0 .4-.1.6l-.5.6c-.1.1-.2.3 0 .5.4.8 1 1.4 1.7 1.9.6.4 1 .5 1.2.6.2.1.4 0 .5-.1l.6-.8c.2-.2.4-.2.6-.1l1.6.8c.2.1.4.2.4.4 0 .3 0 .9-.4 1.4-.4.5-1.3.9-1.8.9-.5 0-1.5-.1-3-1-1.5-.9-2.6-2.3-3-3-.4-.7-.6-1.4-.6-2 0-.7.3-1.3.7-1.6Z"/></svg>
+              <span>Enviar respuesta por WhatsApp</span>
+            </button>
+            <p class="confirmacion__nota" data-confirmacion-nota>Confirmaciones disponibles próximamente</p>
+            <p class="confirmacion__estado" data-confirmacion-estado role="status" aria-live="polite"></p>
+          </form>
+        </div>
+      </div>
+    </section>
+  </main>
+
+  <dialog class="galeria__visor" id="galeria-visor" aria-label="Visor de recuerdos">
+    <div class="galeria__visor-barra">
+      <p class="galeria__visor-posicion" data-galeria-posicion aria-live="polite"></p>
+      <button class="galeria__visor-cerrar" type="button" data-galeria-cerrar aria-label="Cerrar visor">×</button>
+    </div>
+    <div class="galeria__visor-centro">
+      <button class="galeria__visor-navegar" type="button" data-galeria-anterior aria-label="Fotografía anterior">‹</button>
+      <figure class="galeria__visor-figura">
+        <img data-galeria-imagen alt="" hidden>
+        <figcaption data-galeria-leyenda hidden></figcaption>
+      </figure>
+      <button class="galeria__visor-navegar" type="button" data-galeria-siguiente aria-label="Fotografía siguiente">›</button>
+    </div>
+  </dialog>
+
+  <script src="js/datos.js" defer></script>
+  <script src="js/portada.js" defer></script>
+  <script src="js/mensaje.js" defer></script>
+  <script src="js/cuenta.js" defer></script>
+  <script src="js/cuando.js" defer></script>
+  <script src="js/programa.js" defer></script>
+  <script src="js/vestimenta.js" defer></script>
+  <script src="js/galeria.js" defer></script>
+  <script src="js/confirmacion.js" defer></script>
+  <script src="js/entrada.js" defer></script>
+</body>
+</html>

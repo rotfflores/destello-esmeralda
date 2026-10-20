@@ -1,0 +1,370 @@
+/* =========================================================
+   Sección 9 · Pase y confirmación de asistencia
+   Fondo: tus trazos (líneas, diagonal con rombo y sobre con
+   escalones) redibujados en vectores para que se tracen al entrar.
+   Los datos se editan en js/datos.js → confirmacion.
+   ========================================================= */
+.confirmacion {
+  --k: clamp(.46px, calc(100vw / 941), 1.1px);
+  --confirmacion-movimiento: paused;
+  --dorado: #ECD5B0;
+  position: relative;
+  isolation: isolate;
+  overflow: hidden;
+  overflow: clip;
+  color: #F5F0E6;
+  background:
+    linear-gradient(180deg, rgba(14, 22, 14, .26), rgba(14, 22, 14, 0) 14rem),
+    radial-gradient(ellipse 60% 38% at 50% 46%, rgba(216, 197, 165, .07), transparent 72%),
+    linear-gradient(180deg, transparent 70%, rgba(16, 18, 17, .18)),
+    url("../img/confirmacion-textura.webp") 0 0 / calc(520 * var(--k)) auto repeat,
+    #024834;
+}
+
+/* ---------- Fondo ---------- */
+.confirmacion__fondo { position: absolute; z-index: -1; inset: 0; pointer-events: none; }
+.confirmacion__trazo { position: absolute; display: block; overflow: visible; }
+.confirmacion__trazo--izq { left: 0; top: 0; width: calc(90 * var(--k)); height: calc(260 * var(--k)); }
+.confirmacion__trazo--der { right: 0; top: 0; width: calc(251 * var(--k)); height: calc(215 * var(--k)); }
+.confirmacion__trazo--sobre { left: 50%; bottom: calc(32 * var(--k)); width: calc(941 * var(--k)); height: calc(200 * var(--k)); transform: translateX(-50%); }
+.confirmacion__lineas, .confirmacion__rombo { fill: none; stroke: var(--dorado); stroke-width: 2.4; filter: url(#confirmacion-relieve); }
+.confirmacion__rombo { stroke-width: 2.6; }
+.confirmacion__lineas path { stroke-linecap: square; }
+.confirmacion__sello circle { stroke: var(--dorado); stroke-width: 2.6; filter: url(#confirmacion-relieve); }
+.confirmacion__brillo-sello { fill: none; stroke: rgba(255, 246, 226, .35); stroke-width: 2; stroke-linecap: round; }
+.confirmacion__resplandor { opacity: 0; }
+.confirmacion__pulso {
+  fill: none;
+  stroke: #FFF6DE;
+  stroke-width: 3;
+  stroke-linecap: round;
+  stroke-dasharray: .07 2;
+  stroke-dashoffset: 1;
+  opacity: 0;
+  filter: url(#confirmacion-luz);
+}
+
+/* ---------- Contenido ---------- */
+.confirmacion__contenido {
+  position: relative;
+  width: min(100% - 2rem, 62rem);
+  margin: 0 auto;
+  padding: calc(150 * var(--k) + 3rem) 0 calc(205 * var(--k) + 3rem);
+}
+.confirmacion__cabecera { max-width: 40rem; margin: 0 auto clamp(2.6rem, 5vw, 3.8rem); text-align: center; }
+.confirmacion__detalle { display: flex; align-items: center; gap: .8rem; width: 9rem; margin: 0 auto 1.6rem; color: #D8C5A5; }
+.confirmacion__detalle::before, .confirmacion__detalle::after { content: ""; height: 1px; flex: 1; background: currentColor; opacity: .7; }
+.confirmacion__detalle i { width: .55rem; height: .55rem; border: 1px solid currentColor; transform: rotate(45deg); }
+.confirmacion__antetitulo { margin: 0 0 1rem; color: #D8C5A5; font: 600 clamp(.65rem, .6rem + .2vw, .8rem) / 1.6 var(--fuente-texto); letter-spacing: .28em; }
+.confirmacion__titulo { margin: 0; color: #D8C5A5; font: 400 clamp(2.4rem, 1.5rem + 3.2vw, 4.2rem) / 1.12 var(--fuente-display); text-wrap: balance; }
+.confirmacion__frase { max-width: 36ch; margin: 1.2rem auto 0; font: italic 500 clamp(1.2rem, 1rem + .6vw, 1.5rem) / 1.45 var(--fuente-nombre); text-wrap: balance; }
+
+.confirmacion__cuerpo { display: grid; gap: clamp(2.4rem, 5vw, 3.4rem); justify-items: center; }
+@media (min-width: 900px) {
+  .confirmacion__cuerpo { grid-template-columns: minmax(0, 25rem) minmax(0, 27rem); justify-content: center; align-items: center; column-gap: clamp(3rem, 5vw, 4.5rem); }
+}
+
+/* Pase de gala: marco doble champaña con esquinas escalonadas */
+.pase {
+  --e1: 8px;
+  --e2: 17px;
+  --escalon: polygon(var(--e2) 0, calc(100% - var(--e2)) 0, calc(100% - var(--e2)) var(--e1), calc(100% - var(--e1)) var(--e1), calc(100% - var(--e1)) var(--e2), 100% var(--e2), 100% calc(100% - var(--e2)), calc(100% - var(--e1)) calc(100% - var(--e2)), calc(100% - var(--e1)) calc(100% - var(--e1)), calc(100% - var(--e2)) calc(100% - var(--e1)), calc(100% - var(--e2)) 100%, var(--e2) 100%, var(--e2) calc(100% - var(--e1)), var(--e1) calc(100% - var(--e1)), var(--e1) calc(100% - var(--e2)), 0 calc(100% - var(--e2)), 0 var(--e2), var(--e1) var(--e2), var(--e1) var(--e1), var(--e2) var(--e1));
+  position: relative;
+  width: min(100%, 25rem);
+  filter: drop-shadow(0 1.4rem 1.6rem rgba(0, 14, 9, .55));
+}
+.pase__marco, .pase__marco::before, .pase__interior, .pase__interior::before { clip-path: var(--escalon); }
+.pase__marco { position: relative; padding: 1.5px; background: linear-gradient(150deg, #F1DFBE, #C9AF83 45%, #EBD6B0 75%, #BFA272); }
+.pase__marco::before {
+  content: "";
+  position: absolute;
+  inset: 1.5px;
+  background:
+    radial-gradient(ellipse 80% 55% at 50% 30%, rgba(216, 197, 165, .1), transparent 70%),
+    linear-gradient(180deg, #0A5442, #063D30);
+}
+.pase__interior {
+  position: relative;
+  margin: 7px;
+  padding: 1px;
+  background: linear-gradient(150deg, #E9D5B0, #B99D6F 50%, #E4CCA3);
+}
+.pase__interior::before {
+  content: "";
+  position: absolute;
+  inset: 1px;
+  background:
+    url("../img/confirmacion-textura.webp") 0 0 / 260px auto repeat,
+    #064131;
+  opacity: .96;
+}
+.pase__interior > * { position: relative; }
+.pase__interior { display: flex; flex-direction: column; align-items: center; padding: clamp(1.9rem, 5vw, 2.4rem) clamp(1.3rem, 5vw, 2rem) 0; text-align: center; }
+/* Brillo que cruza el pase */
+.pase__marco::after {
+  content: "";
+  position: absolute;
+  inset: 0;
+  opacity: 0;
+  background: linear-gradient(115deg, transparent 38%, rgba(255, 246, 222, .17) 50%, transparent 62%) 100% 0 / 300% 100% no-repeat;
+  mix-blend-mode: screen;
+  pointer-events: none;
+}
+.pase__birrete { width: 3.6rem; height: auto; margin-bottom: 1rem; fill: none; stroke: #D8C5A5; stroke-width: 1.6; stroke-linejoin: round; overflow: visible; }
+.pase__evento { margin: 0; color: #D8C5A5; font: 600 .74rem / 1.5 var(--fuente-texto); letter-spacing: .34em; text-indent: .34em; }
+.pase__graduado { margin: .7rem 0 0; color: #F5F0E6; font: 500 clamp(1.7rem, 1.35rem + 1.4vw, 2.2rem) / 1.15 var(--fuente-nombre); text-wrap: balance; }
+.pase__divisor { display: flex; align-items: center; gap: .7rem; width: 8.5rem; margin: 1.3rem auto; color: #D8C5A5; }
+.pase__divisor::before, .pase__divisor::after { content: ""; height: 1px; flex: 1; background: currentColor; opacity: .7; }
+.pase__divisor i { width: .45rem; height: .45rem; background: currentColor; transform: rotate(45deg); }
+.pase__etiqueta { margin: 0; color: #D8C5A5; font: 600 .64rem / 1.5 var(--fuente-texto); letter-spacing: .24em; text-transform: uppercase; }
+.pase__invitado { margin-bottom: 1rem; }
+.pase__nombre { margin: .35rem 0 0; font: italic 500 clamp(1.3rem, 1.1rem + .7vw, 1.55rem) / 1.25 var(--fuente-nombre); text-wrap: balance; }
+.pase__lugares { margin: 0 0 1.1rem; font: 400 .98rem / 1.55 var(--fuente-texto); color: #F5F0E6; text-wrap: balance; }
+.pase__lugares strong { margin: 0 .08em; color: #D8C5A5; font: 400 1.6rem / 1 var(--fuente-display); vertical-align: -.12em; }
+.pase__talon {
+  align-self: stretch;
+  margin: .4rem -1px 0;
+  padding: 1.05rem .5rem 1.4rem;
+  border-top: 1px dashed rgba(216, 197, 165, .55);
+}
+.pase__invitado[hidden] + .pase__lugares[hidden] + .pase__talon { margin-top: 0; }
+.pase__fecha { margin: .4rem 0 0; font: 500 1.02rem / 1.4 var(--fuente-texto); letter-spacing: .04em; }
+.pase__dia { display: block; color: #D8C5A5; font: italic 500 1.12rem / 1.3 var(--fuente-nombre); letter-spacing: 0; }
+
+/* Formulario */
+.confirmacion__formulario { width: min(100%, 27rem); display: grid; gap: 1.35rem; }
+.campo { margin: 0; padding: 0; border: 0; min-width: 0; }
+.campo[hidden] { display: none; }
+.campo__etiqueta { display: block; margin: 0 0 .55rem; padding: 0; color: #D8C5A5; font: 600 .72rem / 1.4 var(--fuente-texto); letter-spacing: .2em; text-transform: uppercase; }
+.campo__control {
+  display: block;
+  width: 100%;
+  min-height: 3.1rem;
+  padding: .75rem 1rem .65rem;
+  border: 1px solid rgba(216, 197, 165, .7);
+  border-radius: 0;
+  color: #F5F0E6;
+  background: rgba(16, 18, 17, .32);
+  font: 400 1.02rem / 1.4 var(--fuente-texto);
+  transition: border-color .2s ease, background-color .2s ease;
+}
+.campo__control::placeholder { color: rgba(245, 240, 230, .55); }
+.campo__control:hover { border-color: #D8C5A5; }
+.campo__control:focus-visible { outline: 2px solid #F5F0E6; outline-offset: 3px; border-color: #F5F0E6; }
+select.campo__control {
+  appearance: none;
+  padding-right: 2.8rem;
+  background:
+    linear-gradient(45deg, transparent 50%, #D8C5A5 50%) calc(100% - 1.25rem) 50% / .45rem .45rem no-repeat,
+    linear-gradient(135deg, #D8C5A5 50%, transparent 50%) calc(100% - .8rem) 50% / .45rem .45rem no-repeat,
+    rgba(16, 18, 17, .32);
+  cursor: pointer;
+}
+select.campo__control option { color: #101211; background: #F5F0E6; }
+.campo__control[aria-invalid="true"] { border-color: #F2B8A0; border-width: 2px; }
+.campo__ayuda { margin: .45rem 0 0; color: rgba(245, 240, 230, .78); font: 400 .82rem / 1.4 var(--fuente-texto); }
+.campo__error {
+  display: flex;
+  gap: .5rem;
+  align-items: flex-start;
+  margin: .55rem 0 0;
+  color: #FFD9C9;
+  font: 500 .86rem / 1.4 var(--fuente-texto);
+}
+.campo__error::before {
+  content: "!";
+  flex: 0 0 1.15rem;
+  height: 1.15rem;
+  border: 1px solid currentColor;
+  border-radius: 50%;
+  font: 700 .72rem / 1.05rem var(--fuente-texto);
+  text-align: center;
+}
+.campo__error[hidden] { display: none; }
+
+.opciones { display: grid; grid-template-columns: repeat(2, minmax(0, 1fr)); gap: .75rem; }
+.opcion {
+  position: relative;
+  display: flex;
+  align-items: center;
+  gap: .7rem;
+  min-height: 3.4rem;
+  padding: .7rem .85rem;
+  border: 1px solid rgba(216, 197, 165, .55);
+  background: rgba(16, 18, 17, .25);
+  cursor: pointer;
+  transition: border-color .2s ease, background-color .2s ease;
+}
+.opcion input { position: absolute; opacity: 0; inset: 0; width: 100%; height: 100%; margin: 0; cursor: pointer; }
+.opcion__marca {
+  position: relative;
+  flex: 0 0 1.35rem;
+  height: 1.35rem;
+  border: 1.5px solid #D8C5A5;
+  border-radius: 50%;
+}
+.opcion__texto { font: 500 .98rem / 1.25 var(--fuente-texto); }
+.opcion:hover { border-color: #D8C5A5; }
+.opcion:has(input:checked) {
+  border: 2px solid #D8C5A5;
+  padding: calc(.7rem - 1px) calc(.85rem - 1px);
+  background: rgba(216, 197, 165, .16);
+}
+/* Seleccionada: palomita dentro del círculo, además del borde más grueso */
+.opcion:has(input:checked) .opcion__marca { background: #D8C5A5; }
+.opcion:has(input:checked) .opcion__marca::after {
+  content: "";
+  position: absolute;
+  left: 50%;
+  top: 46%;
+  width: .32rem;
+  height: .62rem;
+  border: solid #084C3D;
+  border-width: 0 2px 2px 0;
+  transform: translate(-50%, -50%) rotate(45deg);
+}
+.opcion:has(input:focus-visible) { outline: 2px solid #F5F0E6; outline-offset: 3px; }
+.campo--respuesta[aria-invalid="true"] .opcion { border-color: #F2B8A0; }
+@media (max-width: 359px) {
+  .opciones { grid-template-columns: minmax(0, 1fr); }
+}
+
+.confirmacion__limite { margin: .2rem 0 0; text-align: center; color: #F5F0E6; font: 400 .92rem / 1.5 var(--fuente-texto); }
+.confirmacion__limite strong { color: #D8C5A5; font-weight: 600; }
+.confirmacion__limite[hidden] { display: none; }
+.confirmacion__enviar {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  gap: .7rem;
+  width: 100%;
+  min-height: 3.4rem;
+  padding: .85rem 1.2rem .75rem;
+  border: 0;
+  color: #084C3D;
+  background: linear-gradient(150deg, #F1DFBE, #D8C5A5 45%, #C9B08A);
+  box-shadow: inset 0 0 0 1px rgba(255, 255, 255, .35), 0 .9rem 1.6rem -.8rem rgba(0, 14, 9, .7);
+  font: 700 .8rem / 1.3 var(--fuente-texto);
+  letter-spacing: .14em;
+  text-transform: uppercase;
+  cursor: pointer;
+  transition: transform .2s ease, box-shadow .2s ease, filter .2s ease;
+}
+.confirmacion__enviar svg { flex: 0 0 1.25rem; height: 1.25rem; fill: none; stroke: currentColor; stroke-width: 1.5; stroke-linejoin: round; }
+.confirmacion__enviar svg path + path { fill: currentColor; stroke: none; }
+.confirmacion__enviar:hover:not(:disabled) { transform: translateY(-2px); filter: brightness(1.05); }
+.confirmacion__enviar:focus-visible { outline: 2px solid #F5F0E6; outline-offset: 4px; }
+.confirmacion__enviar:disabled { color: rgba(245, 240, 230, .7); background: rgba(16, 18, 17, .3); box-shadow: inset 0 0 0 1px rgba(216, 197, 165, .45); cursor: not-allowed; }
+.confirmacion__nota { margin: -.4rem 0 0; text-align: center; color: rgba(245, 240, 230, .8); font: 400 .82rem / 1.5 var(--fuente-texto); }
+.confirmacion__estado { margin: 0; text-align: center; color: #F5F0E6; font: italic 500 1.02rem / 1.45 var(--fuente-nombre); }
+.confirmacion__estado:empty { display: none; }
+
+/* =========================================================
+   Animación: el sobre se dibuja, el sello cae y los escalones
+   salen hacia los lados; luego una luz recorre las líneas y
+   llega al sello. Una sola vez; sin JavaScript todo queda visible.
+   ========================================================= */
+.confirmacion.confirmacion__animando { --confirmacion-movimiento: running; }
+
+@media (prefers-reduced-motion: no-preference) {
+  .confirmacion.is-observando [data-confirmacion-revelar]:not(.is-visible) > *,
+  .confirmacion.is-observando .pase:not(.is-visible),
+  .confirmacion.is-observando [data-confirmacion-escena]:not(.is-visible) .confirmacion__rombo,
+  .confirmacion.is-observando [data-confirmacion-escena]:not(.is-visible) .confirmacion__sello { opacity: 0; }
+  .confirmacion.is-observando [data-confirmacion-escena]:not(.is-visible) .confirmacion__lineas path,
+  .confirmacion.is-observando .pase:not(.is-visible) .pase__birrete path { stroke-dasharray: 1; stroke-dashoffset: 1; }
+
+  /* Encabezado */
+  .confirmacion__cabecera.is-visible > * { animation: confirmacion-subir 1.1s cubic-bezier(.2, .7, .2, 1) both; }
+  .confirmacion__cabecera.is-visible .confirmacion__detalle { animation-name: confirmacion-abrir; }
+  .confirmacion__cabecera.is-visible .confirmacion__antetitulo { animation-name: confirmacion-espaciar; animation-delay: .12s; }
+  .confirmacion__cabecera.is-visible .confirmacion__titulo { animation-delay: .25s; }
+  .confirmacion__cabecera.is-visible .confirmacion__frase { animation-delay: .45s; }
+
+  /* Pase: aparece, se dibuja el birrete y un brillo lo recorre */
+  .pase.is-visible { animation: confirmacion-pase 1.3s cubic-bezier(.2, .75, .2, 1) both; }
+  .pase.is-visible .pase__birrete path { stroke-dasharray: 1; animation: confirmacion-trazo 1.6s cubic-bezier(.5, 0, .2, 1) .5s both; }
+  .pase.is-visible .pase__birrete path:nth-child(2) { animation-delay: .75s; }
+  .pase.is-visible .pase__birrete path:nth-child(n + 3) { animation-delay: 1.05s; }
+  .pase.is-visible .pase__marco::after {
+    animation: confirmacion-destello 9s ease-in-out 1.2s infinite;
+    animation-play-state: var(--confirmacion-movimiento);
+  }
+  .confirmacion__formulario.is-visible > * { animation: confirmacion-subir .9s cubic-bezier(.2, .7, .2, 1) both; }
+  .confirmacion__formulario.is-visible > :nth-child(2) { animation-delay: .1s; }
+  .confirmacion__formulario.is-visible > :nth-child(3) { animation-delay: .2s; }
+  .confirmacion__formulario.is-visible > :nth-child(n + 4) { animation-delay: .3s; }
+
+  /* Esquinas: las líneas bajan y la diagonal cruza con su rombo */
+  .confirmacion__trazo--izq.is-visible .confirmacion__lineas path { stroke-dasharray: 1; animation: confirmacion-trazo 1.6s cubic-bezier(.5, 0, .2, 1) both; }
+  .confirmacion__trazo--izq.is-visible .confirmacion__lineas path:nth-child(2) { animation-delay: .15s; }
+  .confirmacion__trazo--izq.is-visible .confirmacion__lineas path:nth-child(3) { animation-delay: .3s; }
+  .confirmacion__trazo--der.is-visible .confirmacion__lineas path { stroke-dasharray: 1; animation: confirmacion-trazo 1.5s cubic-bezier(.5, 0, .2, 1) both; }
+  .confirmacion__trazo--der.is-visible .confirmacion__lineas path:nth-child(2) { animation-delay: .2s; }
+  .confirmacion__trazo--der.is-visible .confirmacion__rombo { transform-box: fill-box; transform-origin: center; animation: confirmacion-rombo 1s cubic-bezier(.3, 1.4, .5, 1) .9s both; }
+
+  /* Sobre: contorno, solapa, sello y escalones hacia los lados */
+  .confirmacion__trazo--sobre.is-visible .confirmacion__sobre { stroke-dasharray: 1; animation: confirmacion-trazo 1.4s cubic-bezier(.5, 0, .2, 1) both; }
+  .confirmacion__trazo--sobre.is-visible .confirmacion__solapa { stroke-dasharray: 1; animation: confirmacion-trazo .9s cubic-bezier(.5, 0, .2, 1) .9s both; }
+  .confirmacion__trazo--sobre.is-visible .confirmacion__sello { transform-box: fill-box; transform-origin: center; animation: confirmacion-sello .8s cubic-bezier(.3, 1.5, .5, 1) 1.55s both; }
+  .confirmacion__trazo--sobre.is-visible .confirmacion__escalon { stroke-dasharray: 1; animation: confirmacion-trazo 1.3s cubic-bezier(.45, 0, .25, 1) 1.2s both; }
+  .confirmacion__trazo--sobre.is-visible .confirmacion__extension { stroke-dasharray: 1; animation: confirmacion-trazo 2.4s cubic-bezier(.3, 0, .6, 1) 2.2s both; }
+
+  /* Ambiente: luz que recorre los trazos hasta el sello */
+  .confirmacion__trazo.is-visible .confirmacion__pulso {
+    animation: confirmacion-pulso-llega 9s cubic-bezier(.45, 0, .55, 1) 3.4s infinite;
+    animation-play-state: var(--confirmacion-movimiento);
+  }
+  .confirmacion__trazo.is-visible .confirmacion__pulso + .confirmacion__pulso { animation-delay: 3.9s; }
+  .confirmacion__trazo--izq.is-visible .confirmacion__pulso,
+  .confirmacion__trazo--der.is-visible .confirmacion__pulso { animation-name: confirmacion-pulso-sale; animation-duration: 11s; }
+  .confirmacion__trazo--der.is-visible .confirmacion__pulso { animation-delay: 6.5s; }
+  .confirmacion__trazo--sobre.is-visible .confirmacion__resplandor {
+    animation: confirmacion-resplandor 9s ease-in-out 3.4s infinite;
+    animation-play-state: var(--confirmacion-movimiento);
+  }
+  .confirmacion__trazo--der.is-visible .confirmacion__rombo {
+    animation: confirmacion-rombo 1s cubic-bezier(.3, 1.4, .5, 1) .9s both, confirmacion-titilar 11s ease-in-out 8s infinite;
+    animation-play-state: running, var(--confirmacion-movimiento);
+  }
+}
+
+@keyframes confirmacion-subir { from { opacity: 0; transform: translateY(16px); filter: blur(3px); } to { opacity: 1; transform: none; filter: none; } }
+@keyframes confirmacion-espaciar { from { opacity: 0; letter-spacing: .6em; } to { opacity: 1; letter-spacing: .28em; } }
+@keyframes confirmacion-abrir { from { opacity: 0; transform: scaleX(.2); } to { opacity: 1; transform: none; } }
+@keyframes confirmacion-trazo { from { stroke-dashoffset: 1; } to { stroke-dashoffset: 0; } }
+@keyframes confirmacion-pase {
+  from { opacity: 0; transform: translateY(2rem) rotate(-1.5deg) scale(.97); }
+  to { opacity: 1; transform: none; }
+}
+@keyframes confirmacion-destello {
+  0%, 6% { opacity: 0; background-position: 100% 0; }
+  14%, 40% { opacity: 1; }
+  48%, 100% { opacity: 0; background-position: 0 0; }
+}
+@keyframes confirmacion-rombo { from { opacity: 0; transform: rotate(-90deg) scale(.3); } to { opacity: 1; transform: none; } }
+@keyframes confirmacion-titilar {
+  0%, 86%, 100% { opacity: 1; transform: none; filter: url(#confirmacion-relieve); }
+  91% { opacity: 1; transform: rotate(90deg) scale(1.25); filter: url(#confirmacion-luz); }
+}
+@keyframes confirmacion-sello {
+  from { opacity: 0; transform: scale(1.8); }
+  to { opacity: 1; transform: none; }
+}
+@keyframes confirmacion-pulso-llega {
+  0% { opacity: 0; stroke-dashoffset: -1; }
+  4% { opacity: 1; }
+  36% { opacity: 1; stroke-dashoffset: .07; }
+  37%, 100% { opacity: 0; stroke-dashoffset: .07; }
+}
+@keyframes confirmacion-pulso-sale {
+  0% { opacity: 0; stroke-dashoffset: .07; }
+  3% { opacity: 1; }
+  30% { opacity: 1; stroke-dashoffset: -1; }
+  31%, 100% { opacity: 0; stroke-dashoffset: -1; }
+}
+@keyframes confirmacion-resplandor {
+  0%, 33% { opacity: 0; }
+  40% { opacity: 1; }
+  62%, 100% { opacity: 0; }
+}

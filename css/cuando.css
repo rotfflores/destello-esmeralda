@@ -1,0 +1,176 @@
+/* Sección 5 · Continúa el lienzo de la cuenta regresiva, sin repetir su arte. */
+.cuando {
+  position: relative;
+  z-index: 1;
+  padding: clamp(5rem, 11vw, 9rem) max(1.25rem, env(safe-area-inset-right)) clamp(1rem, 3vw, 2.5rem);
+  color: #F5F0E6;
+}
+.cuando__interior { width: min(100%, 70rem); margin-inline: auto; }
+.cuando__cabecera { text-align: center; margin: 0 auto clamp(2.7rem, 5vw, 4.5rem); }
+.cuando__division { display: flex; align-items: center; gap: .85rem; width: min(52%, 18rem); margin: 0 auto clamp(3.3rem, 7vw, 6rem); color: #D8C5A5; }
+.cuando__division::before, .cuando__division::after { content: ""; height: 1px; flex: 1; background: currentColor; opacity: .65; }
+.cuando__division i { width: .65rem; height: .65rem; border: 1px solid currentColor; transform: rotate(45deg); }
+.cuando__antetitulo {
+  margin: 0 0 1rem;
+  font: 600 clamp(.65rem, .6rem + .18vw, .8rem) / 1.6 var(--fuente-texto);
+  letter-spacing: .28em;
+  color: #D8C5A5;
+}
+.cuando__titulo {
+  max-width: 22ch;
+  margin: 0 auto;
+  font: 400 clamp(2.2rem, 1.35rem + 3vw, 4rem) / 1.13 var(--fuente-display);
+  color: #D8C5A5;
+  text-wrap: balance;
+}
+.cuando__introduccion {
+  margin: 1.35rem auto 0;
+  font: 500 clamp(1.2rem, 1rem + .55vw, 1.55rem) / 1.45 var(--fuente-nombre);
+  text-wrap: balance;
+}
+.cuando__tarjetas {
+  position: relative;
+  isolation: isolate;
+  display: grid;
+  grid-template-columns: repeat(2, minmax(0, 1fr));
+  gap: clamp(1.1rem, 2.5vw, 2rem);
+  align-items: stretch;
+}
+.cuando__tarjetas--una { grid-template-columns: minmax(0, 35rem); justify-content: center; }
+/* Luces suaves detrás del cristal: le dan algo que refractar */
+.cuando__tarjetas::before {
+  content: "";
+  position: absolute;
+  inset: -12% -6%;
+  z-index: -1;
+  pointer-events: none;
+  background:
+    radial-gradient(circle at 22% 28%, rgba(216, 197, 165, .14), transparent 26%),
+    radial-gradient(circle at 78% 72%, rgba(24, 150, 118, .2), transparent 30%),
+    radial-gradient(circle at 60% 18%, rgba(245, 240, 230, .08), transparent 22%);
+  filter: blur(6px);
+}
+
+/* ---------- Tarjetas de cristal ---------- */
+.cuando__tarjeta {
+  --corte: polygon(17px 0, calc(100% - 17px) 0, calc(100% - 17px) 8px, calc(100% - 8px) 8px, calc(100% - 8px) 17px, 100% 17px, 100% calc(100% - 17px), calc(100% - 8px) calc(100% - 17px), calc(100% - 8px) calc(100% - 8px), calc(100% - 17px) calc(100% - 8px), calc(100% - 17px) 100%, 17px 100%, 17px calc(100% - 8px), 8px calc(100% - 8px), 8px calc(100% - 17px), 0 calc(100% - 17px), 0 17px, 8px 17px, 8px 8px, 17px 8px);
+  position: relative;
+  isolation: isolate;
+  min-width: 0;
+  background:
+    linear-gradient(158deg, rgba(245, 240, 230, .08), rgba(245, 240, 230, .02) 34%, rgba(245, 240, 230, 0) 62%, rgba(16, 18, 17, .1));
+  -webkit-backdrop-filter: blur(5px) saturate(125%);
+  backdrop-filter: blur(5px) saturate(125%);
+  -webkit-clip-path: var(--corte);
+  clip-path: var(--corte);
+}
+/* Filo champaña escalonado con un segundo hilo interior */
+.cuando__tarjeta::before {
+  content: "";
+  position: absolute;
+  inset: 0;
+  z-index: 2;
+  pointer-events: none;
+  background: linear-gradient(160deg, #F3E4C6, rgba(216, 197, 165, .6) 42%, rgba(216, 197, 165, .35) 60%, #D8C5A5);
+  -webkit-clip-path: polygon(evenodd, 17px 0, calc(100% - 17px) 0, calc(100% - 17px) 8px, calc(100% - 8px) 8px, calc(100% - 8px) 17px, 100% 17px, 100% calc(100% - 17px), calc(100% - 8px) calc(100% - 17px), calc(100% - 8px) calc(100% - 8px), calc(100% - 17px) calc(100% - 8px), calc(100% - 17px) 100%, 17px 100%, 17px calc(100% - 8px), 8px calc(100% - 8px), 8px calc(100% - 17px), 0 calc(100% - 17px), 0 17px, 8px 17px, 8px 8px, 17px 8px, 17px 0, 18px 1px, calc(100% - 18px) 1px, calc(100% - 18px) 9px, calc(100% - 9px) 9px, calc(100% - 9px) 18px, calc(100% - 1px) 18px, calc(100% - 1px) calc(100% - 18px), calc(100% - 9px) calc(100% - 18px), calc(100% - 9px) calc(100% - 9px), calc(100% - 18px) calc(100% - 9px), calc(100% - 18px) calc(100% - 1px), 18px calc(100% - 1px), 18px calc(100% - 9px), 9px calc(100% - 9px), 9px calc(100% - 18px), 1px calc(100% - 18px), 1px 18px, 9px 18px, 9px 9px, 18px 9px, 18px 1px, 23px 6px, calc(100% - 23px) 6px, calc(100% - 23px) 14px, calc(100% - 14px) 14px, calc(100% - 14px) 23px, calc(100% - 6px) 23px, calc(100% - 6px) calc(100% - 23px), calc(100% - 14px) calc(100% - 23px), calc(100% - 14px) calc(100% - 14px), calc(100% - 23px) calc(100% - 14px), calc(100% - 23px) calc(100% - 6px), 23px calc(100% - 6px), 23px calc(100% - 14px), 14px calc(100% - 14px), 14px calc(100% - 23px), 6px calc(100% - 23px), 6px 23px, 14px 23px, 14px 14px, 23px 14px, 23px 6px, 24px 7px, calc(100% - 24px) 7px, calc(100% - 24px) 15px, calc(100% - 15px) 15px, calc(100% - 15px) 24px, calc(100% - 7px) 24px, calc(100% - 7px) calc(100% - 24px), calc(100% - 15px) calc(100% - 24px), calc(100% - 15px) calc(100% - 15px), calc(100% - 24px) calc(100% - 15px), calc(100% - 24px) calc(100% - 7px), 24px calc(100% - 7px), 24px calc(100% - 15px), 15px calc(100% - 15px), 15px calc(100% - 24px), 7px calc(100% - 24px), 7px 24px, 15px 24px, 15px 15px, 24px 15px, 24px 7px);
+  clip-path: polygon(evenodd, 17px 0, calc(100% - 17px) 0, calc(100% - 17px) 8px, calc(100% - 8px) 8px, calc(100% - 8px) 17px, 100% 17px, 100% calc(100% - 17px), calc(100% - 8px) calc(100% - 17px), calc(100% - 8px) calc(100% - 8px), calc(100% - 17px) calc(100% - 8px), calc(100% - 17px) 100%, 17px 100%, 17px calc(100% - 8px), 8px calc(100% - 8px), 8px calc(100% - 17px), 0 calc(100% - 17px), 0 17px, 8px 17px, 8px 8px, 17px 8px, 17px 0, 18px 1px, calc(100% - 18px) 1px, calc(100% - 18px) 9px, calc(100% - 9px) 9px, calc(100% - 9px) 18px, calc(100% - 1px) 18px, calc(100% - 1px) calc(100% - 18px), calc(100% - 9px) calc(100% - 18px), calc(100% - 9px) calc(100% - 9px), calc(100% - 18px) calc(100% - 9px), calc(100% - 18px) calc(100% - 1px), 18px calc(100% - 1px), 18px calc(100% - 9px), 9px calc(100% - 9px), 9px calc(100% - 18px), 1px calc(100% - 18px), 1px 18px, 9px 18px, 9px 9px, 18px 9px, 18px 1px, 23px 6px, calc(100% - 23px) 6px, calc(100% - 23px) 14px, calc(100% - 14px) 14px, calc(100% - 14px) 23px, calc(100% - 6px) 23px, calc(100% - 6px) calc(100% - 23px), calc(100% - 14px) calc(100% - 23px), calc(100% - 14px) calc(100% - 14px), calc(100% - 23px) calc(100% - 14px), calc(100% - 23px) calc(100% - 6px), 23px calc(100% - 6px), 23px calc(100% - 14px), 14px calc(100% - 14px), 14px calc(100% - 23px), 6px calc(100% - 23px), 6px 23px, 14px 23px, 14px 14px, 23px 14px, 23px 6px, 24px 7px, calc(100% - 24px) 7px, calc(100% - 24px) 15px, calc(100% - 15px) 15px, calc(100% - 15px) 24px, calc(100% - 7px) 24px, calc(100% - 7px) calc(100% - 24px), calc(100% - 15px) calc(100% - 24px), calc(100% - 15px) calc(100% - 15px), calc(100% - 24px) calc(100% - 15px), calc(100% - 24px) calc(100% - 7px), 24px calc(100% - 7px), 24px calc(100% - 15px), 15px calc(100% - 15px), 15px calc(100% - 24px), 7px calc(100% - 24px), 7px 24px, 15px 24px, 15px 15px, 24px 15px, 24px 7px);
+  opacity: .9;
+}
+/* Brillo del vidrio: luz cenital y un reflejo que cruza la tarjeta */
+.cuando__tarjeta::after {
+  content: "";
+  position: absolute;
+  inset: 0;
+  z-index: 1;
+  pointer-events: none;
+  background:
+    linear-gradient(112deg, transparent 38%, rgba(255, 251, 242, .2) 47%, rgba(255, 251, 242, .05) 52%, transparent 58%) 100% 0 / 260% 100% no-repeat,
+    radial-gradient(120% 55% at 50% -8%, rgba(255, 250, 240, .08), transparent 62%),
+    linear-gradient(180deg, rgba(255, 250, 240, .06), transparent 1.5rem);
+}
+.cuando__tarjeta-interior {
+  position: relative;
+  z-index: 3;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  min-height: 100%;
+  padding: clamp(2.4rem, 4vw, 3.4rem) clamp(1.35rem, 3vw, 2.5rem);
+  text-align: center;
+  text-shadow: 0 1px 10px rgba(16, 18, 17, .6);
+}
+@supports not ((backdrop-filter: blur(1px)) or (-webkit-backdrop-filter: blur(1px))) {
+  .cuando__tarjeta { background: linear-gradient(155deg, rgba(20, 92, 74, .94), rgba(8, 52, 43, .95) 55%, rgba(16, 18, 17, .9)); }
+}
+.cuando__icono { display: block; width: 3.2rem; height: 3.2rem; color: #D8C5A5; margin-bottom: 1.2rem; }
+.cuando__tipo, .cuando__horario-tipo {
+  margin: 0;
+  color: #D8C5A5;
+  font: 600 .7rem / 1.6 var(--fuente-texto);
+  letter-spacing: .19em;
+  text-transform: uppercase;
+}
+.cuando__lugar {
+  margin: .65rem 0 1.6rem;
+  max-width: 23ch;
+  font: 600 clamp(1.7rem, 1.3rem + 1vw, 2.3rem) / 1.18 var(--fuente-nombre);
+  color: #F5F0E6;
+  overflow-wrap: anywhere;
+  text-wrap: balance;
+}
+.cuando__foto { width: 100%; aspect-ratio: 16 / 9; margin: 0 0 1.6rem; padding: 5px; border: 1px solid rgba(216, 197, 165, .75); }
+.cuando__foto img { display: block; width: 100%; height: 100%; object-fit: cover; }
+.cuando__datos { width: 100%; margin-block: auto 1.4rem; }
+.cuando__dato { margin: .3rem 0; font: 400 clamp(1.12rem, .95rem + .55vw, 1.4rem) / 1.32 var(--fuente-nombre); color: #F5F0E6; }
+.cuando__dato--hora { font-size: clamp(1.45rem, 1.15rem + .85vw, 1.9rem); color: #D8C5A5; }
+.cuando__direccion { max-width: 32ch; margin: 1.2rem auto 0; font: 400 clamp(.85rem, .79rem + .18vw, .96rem) / 1.65 var(--fuente-texto); color: #F5F0E6; overflow-wrap: anywhere; }
+.cuando__horarios { display: grid; grid-template-columns: repeat(2, minmax(0, 1fr)); width: 100%; gap: 1rem; margin: .1rem 0 .6rem; }
+.cuando__horarios > div + div { border-left: 1px solid rgba(216, 197, 165, .35); padding-left: 1rem; }
+.cuando__horario-tipo { margin-bottom: .8rem; font-size: .62rem; }
+.cuando__enlace {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  gap: .7rem;
+  min-height: 48px;
+  margin-top: auto;
+  padding: .7rem 1.3rem;
+  border: 1px solid #D8C5A5;
+  color: #101211;
+  background: #D8C5A5;
+  font: 600 .75rem / 1.2 var(--fuente-texto);
+  letter-spacing: .12em;
+  text-decoration: none;
+  transition: background-color .25s ease, color .25s ease;
+}
+.cuando__enlace:hover { background: transparent; color: #F5F0E6; }
+.cuando__enlace:focus-visible { outline: 3px solid #F5F0E6; outline-offset: 4px; }
+.cuando__enlace span { font-size: 1.1rem; line-height: 1; }
+.cuando__zona { margin: 1.55rem auto 0; text-align: center; font: 400 .72rem / 1.5 var(--fuente-texto); letter-spacing: .07em; color: #F5F0E6; opacity: .82; }
+@media (max-width: 700px) {
+  .cuando__tarjetas { grid-template-columns: minmax(0, 34rem); justify-content: center; }
+  .cuando { padding-top: clamp(4.8rem, 12vw, 6rem); }
+}
+@media (max-width: 370px) {
+  .cuando__horarios { grid-template-columns: 1fr; }
+  .cuando__horarios > div + div { border-left: 0; border-top: 1px solid rgba(216, 197, 165, .35); padding: 1rem 0 0; }
+}
+@media (prefers-reduced-motion: no-preference) {
+  .cuando.is-observando [data-cuando-revelar]:not(.cuando__revelado) { opacity: 0; }
+  .cuando__revelado { animation: cuando-entrar 1s cubic-bezier(.2, .7, .2, 1) both; }
+  .cuando__tarjeta + .cuando__tarjeta.cuando__revelado { animation-delay: .15s; }
+  .cuando__tarjeta.cuando__revelado::after { animation: cuando-reflejo 9s ease-in-out .6s infinite; animation-play-state: var(--cuenta-movimiento, running); }
+  .cuando__tarjeta + .cuando__tarjeta.cuando__revelado::after { animation-delay: 1.4s; }
+  .cuando__tarjetas::before { animation: cuando-luces 16s ease-in-out infinite alternate; animation-play-state: var(--cuenta-movimiento, running); }
+  .cuando__enlace { transition: background-color .25s ease, color .25s ease, transform .25s ease; }
+  .cuando__enlace:hover { transform: translateY(-2px); }
+}
+@keyframes cuando-entrar { from { opacity: 0; transform: translateY(22px); filter: blur(4px); } to { opacity: 1; transform: none; filter: none; } }
+@keyframes cuando-reflejo {
+  0% { background-position: 100% 0, 0 0, 0 0; }
+  40%, 100% { background-position: 0 0, 0 0, 0 0; }
+}
+@keyframes cuando-luces {
+  from { transform: translate3d(-2%, 1%, 0) scale(1); }
+  to { transform: translate3d(2%, -2%, 0) scale(1.06); }
+}
