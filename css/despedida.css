@@ -1,0 +1,69 @@
+/* Sección 10 · Cierre abierto sobre la textura esmeralda del proyecto. */
+.despedida {
+  position: relative;
+  isolation: isolate;
+  display: grid;
+  place-items: center;
+  min-height: 100svh;
+  padding: clamp(5.5rem, 11vw, 9rem) max(1.25rem, env(safe-area-inset-right)) clamp(4.5rem, 9vw, 7rem) max(1.25rem, env(safe-area-inset-left));
+  color: #F5F0E6;
+  background:
+    radial-gradient(ellipse 52% 55% at 50% 43%, rgba(11, 99, 78, .62), transparent 82%),
+    linear-gradient(180deg, rgba(3, 37, 29, .34), rgba(16, 18, 17, .22) 55%, rgba(2, 28, 22, .66)),
+    url("../img/portada-textura.webp") center / cover no-repeat,
+    #084C3D;
+}
+.despedida::before {
+  content: "";
+  position: absolute;
+  inset: 0;
+  z-index: -1;
+  pointer-events: none;
+  background: linear-gradient(90deg, rgba(16,18,17,.24), transparent 14%, transparent 86%, rgba(16,18,17,.24));
+}
+.despedida__interior { width: min(100%, 49rem); min-width: 0; margin: auto; text-align: center; }
+.despedida__escalones { display: block; width: 100%; height: 2.2rem; fill: none; stroke: #D8C5A5; stroke-width: 1; opacity: .75; overflow: visible; }
+.despedida__escalones path:nth-child(2) { opacity: .48; }
+.despedida__escalones path:nth-child(3) { fill: #D8C5A5; stroke: none; }
+.despedida__escalones--superior { margin: 0 auto clamp(4rem, 7vw, 5.5rem); }
+.despedida__escalones--inferior { margin: clamp(3rem, 5vw, 4.2rem) auto 0; }
+.despedida__emblema { position: relative; display: grid; place-items: center; width: 5.9rem; height: 5.9rem; margin: 0 auto 2.4rem; color: #D8C5A5; }
+.despedida__emblema::before, .despedida__emblema::after { content: ""; position: absolute; inset: .55rem; border: 1px solid currentColor; transform: rotate(45deg); }
+.despedida__emblema::after { inset: 1rem; opacity: .52; }
+.despedida__iniciales { position: relative; z-index: 1; padding: .2rem; font: 500 clamp(1.6rem, 1.4rem + .6vw, 2rem) / 1 var(--fuente-nombre); letter-spacing: .04em; }
+.despedida__birrete { position: relative; z-index: 1; width: 2.9rem; height: 2.4rem; fill: none; stroke: currentColor; stroke-width: 1.3; stroke-linejoin: round; stroke-linecap: round; }
+.despedida__birrete[hidden], .despedida__iniciales[hidden] { display: none; }
+.despedida__antetitulo { margin: 0 0 1.1rem; color: #D8C5A5; font: 600 clamp(.68rem, .63rem + .17vw, .8rem) / 1.6 var(--fuente-texto); letter-spacing: .27em; text-transform: uppercase; }
+.despedida__titulo { max-width: 15ch; margin: 0 auto; color: #D8C5A5; font: 400 clamp(3.1rem, 2rem + 5vw, 6.3rem) / 1.05 var(--fuente-display); letter-spacing: .01em; text-wrap: balance; overflow-wrap: anywhere; }
+.despedida__mensaje { max-width: 37ch; margin: clamp(2rem, 4vw, 3rem) auto 0; color: #F5F0E6; font: 500 clamp(1.3rem, 1.12rem + .52vw, 1.6rem) / 1.55 var(--fuente-nombre); text-wrap: pretty; }
+.despedida__cierre { margin: clamp(2.5rem, 5vw, 3.6rem) 0 0; color: #D8C5A5; font: 500 clamp(2.6rem, 2.1rem + 2vw, 3.7rem) / 1.05 var(--fuente-nombre); }
+.despedida__firma { margin: 1.15rem auto 0; }
+.despedida__nombre { margin: 0; color: #F5F0E6; font: 600 clamp(1.7rem, 1.4rem + 1vw, 2.4rem) / 1.2 var(--fuente-nombre); overflow-wrap: anywhere; }
+.despedida__fecha { display: block; margin: .5rem auto 0; color: #D8C5A5; font: 400 clamp(.8rem, .74rem + .15vw, .92rem) / 1.5 var(--fuente-texto); letter-spacing: .12em; }
+.despedida__acciones { display: flex; justify-content: center; flex-wrap: wrap; gap: .6rem clamp(.75rem, 3vw, 2rem); margin: clamp(2.5rem, 5vw, 3.6rem) auto 0; }
+.despedida__acciones a { display: inline-flex; align-items: center; justify-content: center; min-height: 48px; padding: .65rem .9rem; border-bottom: 1px solid rgba(216,197,165,.72); color: #F5F0E6; font: 600 .72rem / 1.3 var(--fuente-texto); letter-spacing: .1em; text-decoration: none; text-transform: uppercase; transition: color .2s ease, border-color .2s ease, background .2s ease; }
+.despedida__acciones a:hover { color: #D8C5A5; border-color: #D8C5A5; background: rgba(16,18,17,.15); }
+.despedida__acciones a:focus-visible { outline: 3px solid #F5F0E6; outline-offset: 4px; }
+.despedida__abanico { display: block; width: min(11rem, 50vw); height: auto; margin: clamp(3rem, 6vw, 4.5rem) auto 0; fill: none; stroke: #D8C5A5; stroke-width: 1; opacity: .75; }
+.despedida__abanico path:nth-child(2) { opacity: .48; }
+.despedida__abanico path:nth-child(3) { fill: #D8C5A5; stroke: none; }
+@media (max-width: 540px) {
+  .despedida { padding: 4.5rem 1.3rem 3.5rem; }
+  .despedida__escalones--superior { margin-bottom: 3.7rem; }
+  .despedida__emblema { margin-bottom: 2rem; }
+  .despedida__antetitulo { letter-spacing: .18em; }
+  .despedida__titulo { max-width: 10ch; font-size: clamp(2.8rem, 10.3vw, 4.2rem); }
+  .despedida__mensaje { max-width: 31ch; }
+  .despedida__acciones { gap: .25rem .9rem; }
+  .despedida__acciones a { font-size: .66rem; }
+}
+@media (max-width: 350px) {
+  .despedida__acciones { flex-direction: column; align-items: center; }
+}
+@media (prefers-reduced-motion: no-preference) {
+  .despedida__revelado { animation: despedida-aparecer .95s cubic-bezier(.2,.7,.2,1) both; }
+  .despedida__titulo.despedida__revelado { animation-delay: .1s; }
+  .despedida__firma.despedida__revelado { animation-delay: .12s; }
+}
+@keyframes despedida-aparecer { from { opacity: 0; transform: translateY(16px); } to { opacity: 1; transform: translateY(0); } }
+@media (prefers-reduced-motion: reduce) { .despedida *, .despedida *::before, .despedida *::after { animation: none !important; transition: none !important; scroll-behavior: auto !important; } }

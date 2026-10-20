@@ -1,8 +1,8 @@
 /* =========================================================
    Sección 9 · Pase y confirmación de asistencia
    Llena el pase con js/datos.js (y con ?invitado=…&lugares=… del
-   enlace), valida el formulario y abre WhatsApp con la respuesta
-   lista. La respuesta sólo llega cuando el invitado la envía.
+   enlace), valida el formulario, anima el sobre y abre WhatsApp con
+   la respuesta lista. Sólo llega cuando el invitado la envía.
    ========================================================= */
 (function () {
   "use strict";
@@ -70,6 +70,7 @@
   var nombre = formulario.elements.nombre;
   var respuestas = formulario.querySelectorAll('input[name="respuesta"]');
   var grupoRespuesta = formulario.querySelector(".campo--respuesta");
+  var campoNombre = formulario.querySelector("[data-confirmacion-campo-nombre]");
   var campoAsistentes = formulario.querySelector("[data-confirmacion-asistentes]");
   var asistentes = formulario.elements.asistentes;
   var enviar = formulario.querySelector("[data-confirmacion-enviar]");
@@ -104,27 +105,32 @@
     asistentes.value = String(lugares);
   }
 
-  // Número de destino: sólo dígitos, con código de país (8 a 15 dígitos)
+  // Número de destino: sólo dígitos, con código de país (8 a 15 dígitos).
+  // Sin número, WhatsApp deja que el invitado elija el chat.
   var whatsapp = texto(ajustes.whatsapp).replace(/[^\d]/g, "");
-  var disponible = whatsapp.length >= 8 && whatsapp.length <= 15;
-  enviar.disabled = !disponible;
-  nota.textContent = disponible
-    ? "Se abrirá WhatsApp con tu respuesta lista para enviar"
-    : "Confirmaciones disponibles próximamente";
+  if (!(whatsapp.length >= 8 && whatsapp.length <= 15)) whatsapp = "";
+  enviar.disabled = false;
 
   function respuestaElegida() {
     for (var i = 0; i < respuestas.length; i++) if (respuestas[i].checked) return respuestas[i].value;
     return "";
   }
+  // Con «No» sólo queda el botón: sin nombre ni asistentes
   function actualizarAsistentes() {
-    campoAsistentes.hidden = !(lugares && respuestaElegida() === "si");
+    var eleccion = respuestaElegida();
+    campoAsistentes.hidden = !(lugares && eleccion === "si");
+    campoNombre.hidden = eleccion === "no";
   }
   function desplegar() {
     var eleccion = respuestaElegida();
     if (!eleccion) return;
     saludo.textContent = eleccion === "si"
       ? "¡Qué alegría contar contigo! Completa tus datos para enviar tu respuesta."
-      : "Gracias por avisarnos. Escribe tu nombre para enviar tu respuesta.";
+      : "Lamentamos que no puedas acompañarnos. Gracias por avisarnos.";
+    if (despliegue.classList.contains("is-abierto") && !reducido && saludo.animate) {
+      saludo.animate([{ opacity: 0, transform: "translateY(8px)" }, { opacity: 1, transform: "none" }],
+        { duration: 450, easing: "cubic-bezier(.2, .7, .2, 1)" });
+    }
     despliegue.classList.add("is-abierto");
   }
 
@@ -181,7 +187,7 @@
     nodo.hidden = !mensaje;
   }
   function validarNombre() {
-    var valido = !!nombre.value.trim();
+    var valido = campoNombre.hidden || !!nombre.value.trim();
     nombre.setAttribute("aria-invalid", valido ? "false" : "true");
     mostrarError("confirmacion-nombre-error", valido ? "" : "Escribe tu nombre para que sepamos quién responde.");
     return valido;
@@ -204,6 +210,7 @@
       desplegar();
       if (radio.value === "si") celebrar(radio.closest(".opcion"));
       if (grupoRespuesta.getAttribute("aria-invalid") === "true") validarRespuesta();
+      if (radio.value === "no") validarNombre();
       estado.textContent = "";
     });
   });
@@ -215,7 +222,8 @@
     var quien = nombre.value.trim().replace(/\s+/g, " ");
     var de = graduado ? " de " + graduado : "";
     if (respuestaElegida() === "no") {
-      return "Hola, soy " + quien + ". Gracias por invitarme a la graduación" + de +
+      quien = invitado || quien;
+      return (quien ? "Hola, soy " + quien + "." : "Hola.") + " Gracias por invitarme a la graduación" + de +
         ". En esta ocasión no podré acompañarte. ¡Te deseo una celebración muy especial!";
     }
     var cuerpo = "Hola, soy " + quien + ". Confirmo mi asistencia a la graduación" + de +
@@ -227,25 +235,89 @@
     return cuerpo + " ¡Gracias por la invitación!";
   }
 
+  /* ---------- Al enviar: la respuesta entra al sobre, se sella y sale volando ---------- */
+  var SOBRE =
+    '<svg viewBox="0 0 120 84" aria-hidden="true">' +
+      '<defs><radialGradient id="sobre-lacre" cx="40%" cy="35%" r="70%">' +
+        '<stop offset="0" stop-color="#F3E2C2"/><stop offset=".55" stop-color="#D8C5A5"/><stop offset="1" stop-color="#9C8460"/>' +
+      '</radialGradient></defs>' +
+      '<rect class="sobre__fondo" x="2" y="2" width="116" height="80" rx="3"/>' +
+      '<g class="sobre__carta"><rect x="16" y="-22" width="88" height="62" rx="2"/>' +
+        '<path d="M30 -6h60M30 4h60M38 14h44"/></g>' +
+      '<path class="sobre__bolsillo" d="M2 30 60 58 118 30V82H2Z"/>' +
+      '<path class="sobre__solapa" d="M2 2 60 46 118 2Z"/>' +
+      '<g class="sobre__sello"><circle cx="60" cy="46" r="10"/><path d="M60 40.5 65.5 46 60 51.5 54.5 46Z"/></g>' +
+    '</svg>';
+
+  function animarSobre(alAbrir) {
+    var caja = enviar.getBoundingClientRect();
+    var capa = document.createElement("div");
+    capa.className = "confirmacion__envio";
+    capa.setAttribute("aria-hidden", "true");
+    var sobre = document.createElement("div");
+    sobre.className = "sobre";
+    sobre.innerHTML = SOBRE;
+    sobre.style.left = caja.left + caja.width / 2 + "px";
+    sobre.style.top = caja.top - 12 + "px";
+    capa.appendChild(sobre);
+    document.body.appendChild(capa);
+
+    var curva = "cubic-bezier(.2, .7, .2, 1)";
+    sobre.animate([
+      { transform: "translate(-50%, -60%) scale(.55)", opacity: 0 },
+      { transform: "translate(-50%, -100%) scale(1)", opacity: 1 }
+    ], { duration: 320, easing: curva, fill: "forwards" });
+    sobre.querySelector(".sobre__carta").animate([
+      { transform: "translateY(0)" }, { transform: "translateY(0)", offset: .35 }, { transform: "translateY(30px)" }
+    ], { duration: 600, easing: "cubic-bezier(.5, 0, .3, 1)", fill: "forwards" });
+    sobre.querySelector(".sobre__solapa").animate([
+      { transform: "scaleY(-1)" }, { transform: "scaleY(-1)", offset: .55 }, { transform: "scaleY(1)" }
+    ], { duration: 820, easing: "cubic-bezier(.5, 0, .2, 1)", fill: "forwards" });
+    sobre.querySelector(".sobre__sello").animate([
+      { transform: "scale(0)", opacity: 0 }, { transform: "scale(0)", opacity: 0, offset: .72 },
+      { transform: "scale(1.35)", opacity: 1, offset: .87 }, { transform: "scale(1)", opacity: 1 }
+    ], { duration: 1000, easing: "ease-out", fill: "forwards" });
+
+    var vuelo = sobre.animate([
+      { transform: "translate(-50%, -100%) scale(1) rotate(0deg)", opacity: 1 },
+      { transform: "translate(-50%, -112%) scale(1.04) rotate(-3deg)", opacity: 1, offset: .25 },
+      { transform: "translate(calc(-50% + 34vw), calc(-100% - 70vh)) scale(.35) rotate(18deg)", opacity: 0 }
+    ], { duration: 720, delay: 1050, easing: "cubic-bezier(.55, 0, .7, .4)", fill: "both" });
+
+    setTimeout(function () {
+      if (respuestaElegida() === "si") celebrar(sobre);
+      alAbrir();
+    }, 1100);
+    vuelo.finished.then(function () { capa.remove(); }, function () { capa.remove(); });
+  }
+
+  var enviando = false;
   formulario.addEventListener("submit", function (evento) {
     evento.preventDefault();
-    if (!disponible) return;
+    if (enviando) return;
     var nombreValido = validarNombre();
     var respuestaValida = validarRespuesta();
     if (!nombreValido || !respuestaValida) {
       (respuestaValida ? nombre : respuestas[0]).focus();
       return;
     }
-    // Brillo de envío en el botón mientras se abre WhatsApp
+    var enlace = "https://wa.me/" + whatsapp + "?text=" + encodeURIComponent(mensaje());
+    function abrir() {
+      var ventana = window.open(enlace, "_blank");
+      if (ventana) ventana.opener = null;
+      else window.location.href = enlace;
+      enviando = false;
+      enviar.classList.remove("is-enviando");
+      // Abrir el chat no registra la asistencia: la respuesta llega al enviarla.
+      estado.textContent = "Tu respuesta está lista en el chat. Envíala para que nos llegue.";
+    }
+    estado.textContent = "";
+    if (reducido || !enviar.animate) { abrir(); return; }
+    enviando = true;
     enviar.classList.remove("is-enviando");
     void enviar.offsetWidth;
     enviar.classList.add("is-enviando");
-    var enlace = "https://wa.me/" + whatsapp + "?text=" + encodeURIComponent(mensaje());
-    var ventana = window.open(enlace, "_blank");
-    if (ventana) ventana.opener = null;
-    else window.location.href = enlace;
-    // Abrir WhatsApp no registra la asistencia: la respuesta llega al enviarla.
-    estado.textContent = "Tu mensaje está listo en WhatsApp. Envíalo desde ahí para que llegue tu respuesta.";
+    animarSobre(abrir);
   });
 
   /* ---------- Revelado una sola vez y ambiente sólo en pantalla ---------- */

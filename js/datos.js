@@ -127,8 +127,17 @@ window.INVITACION = {
     fechaLimite: "28 de noviembre de 2026", // Vacío = no se muestra.
     // WhatsApp que recibe las respuestas, en formato internacional: código de
     // país y número, sin espacios ni signo +. Ejemplo: "5215512345678".
-    // Vacío = el botón se desactiva y aparece «Confirmaciones disponibles próximamente».
+    // Vacío = el invitado elige en su teléfono el chat al que enviará su respuesta.
     whatsapp: ""
+  },
+  // Sección 10 · Despedida. El nombre y la fecha se toman de las claves
+  // generales de arriba; deja iniciales vacío para mostrar un birrete.
+  despedida: {
+    iniciales: "VR",
+    antetitulo: "LO MEJOR ESTÁ POR COMENZAR",
+    frase: "El futuro comienza aquí",
+    mensaje: "Gracias por ser parte de mi historia. Me hará muy feliz celebrar contigo este logro y el comienzo de una nueva etapa",
+    cierre: "¡Te espero!"
   }
 };
 

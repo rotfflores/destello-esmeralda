@@ -19,6 +19,7 @@
   <link rel="stylesheet" href="css/vestimenta.css">
   <link rel="stylesheet" href="css/galeria.css">
   <link rel="stylesheet" href="css/confirmacion.css">
+  <link rel="stylesheet" href="css/despedida.css">
   <link rel="stylesheet" href="css/transiciones.css">
   <script>document.documentElement.classList.add("js");</script>
   <noscript><style>.entrada { display: none; } html.entrada-activa, html.entrada-activa body { overflow: auto; }</style></noscript>
@@ -593,7 +594,7 @@
       </div>
     </section>
     <!-- ============ SECCIÓN 9 · PASE Y CONFIRMACIÓN ============
-         Textos, pase, fecha límite y número de WhatsApp: js/datos.js → confirmacion. -->
+         Textos, pase, fecha límite y número que recibe las respuestas (WhatsApp): js/datos.js → confirmacion. -->
     <section class="confirmacion" id="confirmacion" aria-labelledby="confirmacion-titulo">
       <div class="confirmacion__fondo" aria-hidden="true">
         <svg class="confirmacion__trazo confirmacion__trazo--izq" viewBox="0 0 90 260" data-confirmacion-escena focusable="false">
@@ -716,7 +717,7 @@
             <div class="confirmacion__despliegue" data-confirmacion-despliegue>
               <div class="confirmacion__panel">
                 <p class="confirmacion__saludo" data-confirmacion-saludo></p>
-                <div class="campo">
+                <div class="campo campo--nombre" data-confirmacion-campo-nombre>
                   <label class="campo__etiqueta" for="confirmacion-nombre">Nombre del invitado</label>
                   <input class="campo__control" id="confirmacion-nombre" name="nombre" type="text" autocomplete="name" required aria-describedby="confirmacion-nombre-error">
                   <p class="campo__error" id="confirmacion-nombre-error" hidden></p>
@@ -726,13 +727,38 @@
                   <select class="campo__control" id="confirmacion-asistentes" name="asistentes" aria-describedby="confirmacion-asistentes-ayuda"></select>
                   <p class="campo__ayuda" id="confirmacion-asistentes-ayuda">Contándote a ti</p>
                 </div>
-                <button class="confirmacion__enviar" type="submit" disabled data-confirmacion-enviar>Enviar respuesta por WhatsApp</button>
-                <p class="confirmacion__nota" data-confirmacion-nota>Confirmaciones disponibles próximamente</p>
+                <button class="confirmacion__enviar" type="submit" data-confirmacion-enviar>Enviar respuesta</button>
+                <p class="confirmacion__nota" data-confirmacion-nota>Se abrirá tu respuesta lista para enviarla</p>
                 <p class="confirmacion__estado" data-confirmacion-estado role="status" aria-live="polite"></p>
               </div>
             </div>
           </form>
         </div>
+      </div>
+    </section>
+
+    <!-- ============ SECCIÓN 10 · DESPEDIDA ============ -->
+    <section class="despedida" id="despedida" aria-labelledby="despedida-titulo">
+      <div class="despedida__interior">
+        <svg class="despedida__escalones despedida__escalones--superior" viewBox="0 0 720 34" preserveAspectRatio="none" aria-hidden="true" focusable="false"><path d="M0 31H125V19H230V8H320M720 31H595V19H490V8H400"/><path d="M0 33H135V23H237V12H320M720 33H585V23H483V12H400"/><path d="m360 3 8 8-8 8-8-8z"/></svg>
+        <div class="despedida__emblema" data-despedida-revelar aria-hidden="true">
+          <span class="despedida__iniciales" data-despedida-iniciales hidden></span>
+          <svg class="despedida__birrete" data-despedida-birrete viewBox="0 0 64 48" focusable="false"><path d="M32 5 59 18 32 31 5 18Z M15 24v12c0 5 8 9 17 9s17-4 17-9V24 M32 18l22 10v12 M51 40h6l-1.5 6h-3z"/></svg>
+        </div>
+        <p class="despedida__antetitulo" data-despedida-campo="antetitulo" data-despedida-revelar>LO MEJOR ESTÁ POR COMENZAR</p>
+        <h2 class="despedida__titulo" id="despedida-titulo" data-despedida-campo="frase" data-despedida-revelar>El futuro comienza aquí</h2>
+        <p class="despedida__mensaje" data-despedida-campo="mensaje" data-despedida-revelar>Gracias por ser parte de mi historia. Me hará muy feliz celebrar contigo este logro y el comienzo de una nueva etapa</p>
+        <p class="despedida__cierre" data-despedida-campo="cierre" data-despedida-revelar>¡Te espero!</p>
+        <div class="despedida__firma" data-despedida-revelar>
+          <p class="despedida__nombre" data-despedida-nombre>[Nombre del graduado]</p>
+          <time class="despedida__fecha" data-despedida-fecha>[Fecha del evento]</time>
+        </div>
+        <nav class="despedida__acciones" aria-label="Acciones de la invitación">
+          <a href="#confirmacion" data-despedida-ir>Confirmar asistencia</a>
+          <a href="#portada" data-despedida-ir>Volver al inicio</a>
+        </nav>
+        <svg class="despedida__abanico" viewBox="0 0 180 78" aria-hidden="true" focusable="false"><path d="M90 71V6M90 71 57 11M90 71 30 30M90 71 14 55M90 71l33-60M90 71l60-41M90 71l76-16"/><path d="M14 55 30 30 57 11 90 6l33 5 27 19 16 25M57 11l33 60 33-60M30 30l60 41 60-41"/><path d="m90 66 5 5-5 5-5-5z"/></svg>
+        <svg class="despedida__escalones despedida__escalones--inferior" viewBox="0 0 720 34" preserveAspectRatio="none" aria-hidden="true" focusable="false"><path d="M0 3h125v12h105v11h90M720 3H595v12H490v11h-90"/><path d="M0 1h135v10h102v11h83M720 1H585v10H483v11h-83"/></svg>
       </div>
     </section>
   </main>
@@ -761,6 +787,7 @@
   <script src="js/vestimenta.js" defer></script>
   <script src="js/galeria.js" defer></script>
   <script src="js/confirmacion.js" defer></script>
+  <script src="js/despedida.js" defer></script>
   <script src="js/transiciones.js" defer></script>
   <script src="js/entrada.js" defer></script>
 </body>
