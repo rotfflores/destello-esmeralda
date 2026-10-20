@@ -1,0 +1,117 @@
+/* =========================================================
+   Invitación de graduación · Transiciones entre secciones
+   js/transiciones.js inserta un .transicion entre cada par de
+   secciones. Ocupa 0 px de alto: sólo suaviza la costura con un
+   velo esmeralda y dibuja un doble filete champán que se abre
+   desde el centro cuando la costura entra en pantalla.
+   ========================================================= */
+.transicion {
+  --t-ancho: min(88%, 760px);
+  position: relative;
+  z-index: 3;
+  height: 0;
+  pointer-events: none;
+}
+
+/* Velo que funde el final de una sección con el inicio de la siguiente */
+.transicion__velo {
+  position: absolute;
+  inset: -4.5rem 0 auto;
+  height: 9rem;
+  background:
+    linear-gradient(180deg,
+      rgba(3, 30, 23, 0) 0%,
+      rgba(3, 30, 23, .42) 46%,
+      rgba(3, 30, 23, .42) 54%,
+      rgba(3, 30, 23, 0) 100%);
+}
+
+/* Doble filete: dos líneas finas que se desvanecen hacia los lados */
+.transicion__filete {
+  position: absolute;
+  left: 50%;
+  width: var(--t-ancho);
+  height: 1px;
+  transform: translateX(-50%) scaleX(1);
+  background: linear-gradient(90deg,
+    rgba(216, 197, 165, 0) 0%,
+    rgba(216, 197, 165, .78) 22%,
+    rgba(216, 197, 165, .9) 50%,
+    rgba(216, 197, 165, .78) 78%,
+    rgba(216, 197, 165, 0) 100%);
+}
+.transicion__filete--sup { top: -3px; }
+.transicion__filete--inf { top: 2px; opacity: .55; width: calc(var(--t-ancho) * .82); }
+
+/* Rombos pequeños en los extremos del filete, nunca al centro */
+.transicion__punta {
+  position: absolute;
+  top: -3.5px;
+  width: 6px;
+  height: 6px;
+  border: 1px solid rgba(216, 197, 165, .85);
+  background: #084C3D;
+  transform: translate(-50%, -2.5px) rotate(45deg);
+}
+.transicion__punta--izq { left: calc(50% - var(--t-ancho) * .39); }
+.transicion__punta--der { left: calc(50% + var(--t-ancho) * .39); }
+
+/* Destello que recorre el filete una sola vez */
+.transicion__brillo {
+  position: absolute;
+  top: -5px;
+  left: 50%;
+  width: var(--t-ancho);
+  height: 5px;
+  transform: translateX(-50%);
+  overflow: hidden;
+  opacity: 0;
+}
+.transicion__brillo::before {
+  content: "";
+  position: absolute;
+  inset: 0 auto 0 0;
+  width: 22%;
+  background: radial-gradient(closest-side, rgba(245, 240, 230, .95), rgba(245, 240, 230, 0));
+  transform: translateX(-120%);
+}
+
+/* ---------- Animación de entrada ----------
+   Sin JS, sin IntersectionObserver o con movimiento reducido,
+   el filete se ve completo y quieto. */
+.transicion.is-esperando .transicion__filete { transform: translateX(-50%) scaleX(0); }
+.transicion.is-esperando .transicion__punta { opacity: 0; transform: translate(-50%, -2.5px) rotate(45deg) scale(.2); }
+.transicion.is-esperando .transicion__velo { opacity: .35; }
+
+.transicion.is-visible .transicion__filete {
+  transform: translateX(-50%) scaleX(1);
+  transition: transform 1.25s cubic-bezier(.22, .7, .2, 1);
+}
+.transicion.is-visible .transicion__filete--inf { transition-delay: .18s; }
+.transicion.is-visible .transicion__velo { opacity: 1; transition: opacity 1.2s ease; }
+.transicion.is-visible .transicion__punta {
+  opacity: 1;
+  transform: translate(-50%, -2.5px) rotate(45deg) scale(1);
+  transition: opacity .5s ease .95s, transform .6s cubic-bezier(.3, 1.5, .5, 1) .95s;
+}
+.transicion.is-visible .transicion__brillo { animation: transicion-brillo-capa 1.6s ease 1.1s both; }
+.transicion.is-visible .transicion__brillo::before { animation: transicion-brillo 1.6s cubic-bezier(.45, 0, .3, 1) 1.1s both; }
+
+@keyframes transicion-brillo-capa {
+  0%, 100% { opacity: 0; }
+  15%, 80% { opacity: 1; }
+}
+@keyframes transicion-brillo {
+  from { transform: translateX(-120%); }
+  to { transform: translateX(560%); }
+}
+
+@media (max-width: 520px) {
+  .transicion { --t-ancho: 92%; }
+  .transicion__velo { inset: -3.5rem 0 auto; height: 7rem; }
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .transicion *, .transicion *::before { transition: none !important; animation: none !important; }
+  .transicion__brillo { display: none; }
+}

@@ -76,6 +76,13 @@
   var nota = formulario.querySelector("[data-confirmacion-nota]");
   var estado = formulario.querySelector("[data-confirmacion-estado]");
   var limite = formulario.querySelector("[data-confirmacion-limite]");
+  var despliegue = formulario.querySelector("[data-confirmacion-despliegue]");
+  var saludo = formulario.querySelector("[data-confirmacion-saludo]");
+  var reducido = window.matchMedia && window.matchMedia("(prefers-reduced-motion: reduce)").matches;
+
+  // El resto del formulario se despliega al elegir una respuesta.
+  // Sin JavaScript (o si algo falla antes de aquí) queda abierto.
+  seccion.classList.add("confirmacion--plegable");
 
   if (invitado) nombre.value = invitado;
 
@@ -112,6 +119,61 @@
   function actualizarAsistentes() {
     campoAsistentes.hidden = !(lugares && respuestaElegida() === "si");
   }
+  function desplegar() {
+    var eleccion = respuestaElegida();
+    if (!eleccion) return;
+    saludo.textContent = eleccion === "si"
+      ? "¡Qué alegría contar contigo! Completa tus datos para enviar tu respuesta."
+      : "Gracias por avisarnos. Escribe tu nombre para enviar tu respuesta.";
+    despliegue.classList.add("is-abierto");
+  }
+
+  /* ---------- Celebración al aceptar: destellos y el birrete del pase vuela ---------- */
+  function celebrar(origen) {
+    if (reducido || !origen.animate) return;
+    var caja = origen.getBoundingClientRect();
+    var capa = document.createElement("div");
+    capa.className = "confirmacion__festejo";
+    capa.setAttribute("aria-hidden", "true");
+    document.body.appendChild(capa);
+    var cx = caja.left + caja.width * .3, cy = caja.top + caja.height / 2;
+    var formas = ["rombo", "punto", "tira"];
+    var mayor = 0;
+    for (var i = 0; i < 28; i++) {
+      var pieza = document.createElement("i");
+      pieza.className = "confirmacion__chispa confirmacion__chispa--" + formas[i % 3];
+      pieza.style.left = cx + "px";
+      pieza.style.top = cy + "px";
+      capa.appendChild(pieza);
+      var angulo = -Math.PI / 2 + (Math.random() - .5) * Math.PI * 1.25;
+      var distancia = 70 + Math.random() * 150;
+      var dx = Math.cos(angulo) * distancia, dy = Math.sin(angulo) * distancia;
+      var giro = (Math.random() - .5) * 540;
+      var duracion = 1000 + Math.random() * 700;
+      mayor = Math.max(mayor, duracion);
+      pieza.animate([
+        { transform: "translate(-50%, -50%) scale(.3) rotate(0deg)", opacity: 0 },
+        { transform: "translate(calc(-50% + " + dx * .7 + "px), calc(-50% + " + dy * .7 + "px)) scale(1) rotate(" + giro * .6 + "deg)", opacity: 1, offset: .35 },
+        { transform: "translate(calc(-50% + " + dx + "px), calc(-50% + " + (dy + 70) + "px)) scale(.8) rotate(" + giro + "deg)", opacity: 0 }
+      ], { duration: duracion, easing: "cubic-bezier(.2, .7, .3, 1)", fill: "both" });
+    }
+    setTimeout(function () { capa.remove(); }, mayor + 50);
+    var birrete = seccion.querySelector(".pase__birrete");
+    if (birrete) {
+      birrete.animate([
+        { transform: "none" },
+        { transform: "translateY(-1.6rem) rotate(-16deg)", offset: .4 },
+        { transform: "translateY(.15rem) rotate(4deg)", offset: .78 },
+        { transform: "none" }
+      ], { duration: 1100, easing: "cubic-bezier(.3, .6, .3, 1)" });
+    }
+    var tarjeta = seccion.querySelector(".pase");
+    if (tarjeta) tarjeta.animate([
+      { filter: "drop-shadow(0 1.4rem 1.6rem rgba(0, 14, 9, .55))" },
+      { filter: "drop-shadow(0 0 1.6rem rgba(236, 213, 176, .55))", offset: .35 },
+      { filter: "drop-shadow(0 1.4rem 1.6rem rgba(0, 14, 9, .55))" }
+    ], { duration: 1400, easing: "ease-out" });
+  }
 
   function mostrarError(id, mensaje) {
     var nodo = document.getElementById(id);
@@ -139,12 +201,15 @@
   respuestas.forEach(function (radio) {
     radio.addEventListener("change", function () {
       actualizarAsistentes();
+      desplegar();
+      if (radio.value === "si") celebrar(radio.closest(".opcion"));
       if (grupoRespuesta.getAttribute("aria-invalid") === "true") validarRespuesta();
       estado.textContent = "";
     });
   });
   asistentes.addEventListener("change", function () { estado.textContent = ""; });
   actualizarAsistentes();
+  desplegar();
 
   function mensaje() {
     var quien = nombre.value.trim().replace(/\s+/g, " ");
@@ -168,9 +233,13 @@
     var nombreValido = validarNombre();
     var respuestaValida = validarRespuesta();
     if (!nombreValido || !respuestaValida) {
-      (nombreValido ? respuestas[0] : nombre).focus();
+      (respuestaValida ? nombre : respuestas[0]).focus();
       return;
     }
+    // Brillo de envío en el botón mientras se abre WhatsApp
+    enviar.classList.remove("is-enviando");
+    void enviar.offsetWidth;
+    enviar.classList.add("is-enviando");
     var enlace = "https://wa.me/" + whatsapp + "?text=" + encodeURIComponent(mensaje());
     var ventana = window.open(enlace, "_blank");
     if (ventana) ventana.opener = null;
@@ -180,7 +249,6 @@
   });
 
   /* ---------- Revelado una sola vez y ambiente sólo en pantalla ---------- */
-  var reducido = window.matchMedia && window.matchMedia("(prefers-reduced-motion: reduce)").matches;
   if (!("IntersectionObserver" in window) || reducido) return;
   var enPantalla = false;
   function actualizarAmbiente() {

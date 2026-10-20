@@ -250,14 +250,53 @@ select.campo__control option { color: #101211; background: #F5F0E6; }
   cursor: pointer;
   transition: transform .2s ease, box-shadow .2s ease, filter .2s ease;
 }
-.confirmacion__enviar svg { flex: 0 0 1.25rem; height: 1.25rem; fill: none; stroke: currentColor; stroke-width: 1.5; stroke-linejoin: round; }
-.confirmacion__enviar svg path + path { fill: currentColor; stroke: none; }
+/* Brillo de envío al pulsar el botón */
+.confirmacion__enviar { position: relative; overflow: hidden; }
+.confirmacion__enviar::after {
+  content: "";
+  position: absolute;
+  inset: 0;
+  opacity: 0;
+  background: linear-gradient(110deg, transparent 35%, rgba(255, 255, 255, .75) 50%, transparent 65%) 120% 0 / 250% 100% no-repeat;
+  pointer-events: none;
+}
+.confirmacion__enviar.is-enviando::after { animation: confirmacion-enviar 1s cubic-bezier(.4, 0, .2, 1) both; }
 .confirmacion__enviar:hover:not(:disabled) { transform: translateY(-2px); filter: brightness(1.05); }
 .confirmacion__enviar:focus-visible { outline: 2px solid #F5F0E6; outline-offset: 4px; }
 .confirmacion__enviar:disabled { color: rgba(245, 240, 230, .7); background: rgba(16, 18, 17, .3); box-shadow: inset 0 0 0 1px rgba(216, 197, 165, .45); cursor: not-allowed; }
 .confirmacion__nota { margin: -.4rem 0 0; text-align: center; color: rgba(245, 240, 230, .8); font: 400 .82rem / 1.5 var(--fuente-texto); }
 .confirmacion__estado { margin: 0; text-align: center; color: #F5F0E6; font: italic 500 1.02rem / 1.45 var(--fuente-nombre); }
 .confirmacion__estado:empty { display: none; }
+
+/* El resto del formulario se despliega al elegir Sí o No */
+.confirmacion__despliegue { display: grid; grid-template-rows: 1fr; }
+.confirmacion__panel { display: grid; gap: 1.35rem; min-height: 0; margin: -6px; padding: 6px; overflow: hidden; }
+.confirmacion__saludo { margin: 0; text-align: center; color: #F5F0E6; font: italic 500 1.12rem / 1.4 var(--fuente-nombre); }
+.confirmacion__saludo:empty { display: none; }
+.confirmacion--plegable .confirmacion__despliegue {
+  grid-template-rows: 0fr;
+  opacity: 0;
+  visibility: hidden;
+  transition: grid-template-rows .75s cubic-bezier(.3, .7, .2, 1), opacity .4s ease, visibility 0s linear .75s;
+}
+.confirmacion--plegable .confirmacion__despliegue.is-abierto {
+  grid-template-rows: 1fr;
+  opacity: 1;
+  visibility: visible;
+  transition: grid-template-rows .75s cubic-bezier(.3, .7, .2, 1), opacity .5s ease .1s, visibility 0s;
+}
+.confirmacion--plegable .confirmacion__formulario { gap: 0; }
+.confirmacion--plegable .campo--respuesta { margin-top: 1.1rem; }
+.confirmacion--plegable .confirmacion__limite[hidden] + .campo--respuesta { margin-top: 0; }
+.confirmacion--plegable .confirmacion__despliegue.is-abierto { margin-top: 1.6rem; }
+.confirmacion--plegable .confirmacion__despliegue { margin-top: 0; transition-property: grid-template-rows, opacity, visibility, margin-top; }
+
+/* Destellos al aceptar (los crea confirmacion.js) */
+.confirmacion__festejo { position: fixed; z-index: 50; inset: 0; overflow: hidden; pointer-events: none; }
+.confirmacion__chispa { position: absolute; display: block; width: 9px; height: 9px; }
+.confirmacion__chispa--rombo { border: 1.5px solid #ECD5B0; transform: rotate(45deg); }
+.confirmacion__chispa--punto { width: 6px; height: 6px; border-radius: 50%; background: #FFF4DA; box-shadow: 0 0 8px rgba(255, 244, 218, .9); }
+.confirmacion__chispa--tira { width: 4px; height: 12px; background: linear-gradient(#F1DFBE, #C9AF83); }
 
 /* =========================================================
    Animación: el sobre se dibuja, el sello cae y los escalones
@@ -290,7 +329,7 @@ select.campo__control option { color: #101211; background: #F5F0E6; }
     animation: confirmacion-destello 9s ease-in-out 1.2s infinite;
     animation-play-state: var(--confirmacion-movimiento);
   }
-  .confirmacion__formulario.is-visible > * { animation: confirmacion-subir .9s cubic-bezier(.2, .7, .2, 1) both; }
+  .confirmacion__formulario.is-visible > :not(.confirmacion__despliegue) { animation: confirmacion-subir .9s cubic-bezier(.2, .7, .2, 1) both; }
   .confirmacion__formulario.is-visible > :nth-child(2) { animation-delay: .1s; }
   .confirmacion__formulario.is-visible > :nth-child(3) { animation-delay: .2s; }
   .confirmacion__formulario.is-visible > :nth-child(n + 4) { animation-delay: .3s; }
@@ -329,6 +368,22 @@ select.campo__control option { color: #101211; background: #F5F0E6; }
   }
 }
 
+  /* Cada parte del formulario sube al desplegarse */
+@media (prefers-reduced-motion: no-preference) {
+  .confirmacion__despliegue.is-abierto .confirmacion__panel > * { animation: confirmacion-subir .7s cubic-bezier(.2, .7, .2, 1) both; }
+  .confirmacion__despliegue.is-abierto .confirmacion__panel > :nth-child(2) { animation-delay: .12s; }
+  .confirmacion__despliegue.is-abierto .confirmacion__panel > :nth-child(3) { animation-delay: .2s; }
+  .confirmacion__despliegue.is-abierto .confirmacion__panel > :nth-child(n + 4) { animation-delay: .28s; }
+  .confirmacion__despliegue.is-abierto .campo--asistentes:not([hidden]) { animation: confirmacion-subir .6s cubic-bezier(.2, .7, .2, 1) both; }
+}
+@media (prefers-reduced-motion: reduce) {
+  .confirmacion--plegable .confirmacion__despliegue, .confirmacion--plegable .confirmacion__despliegue.is-abierto { transition: none; }
+}
+@keyframes confirmacion-enviar {
+  0% { opacity: 0; background-position: 120% 0; }
+  20% { opacity: 1; }
+  100% { opacity: 0; background-position: -20% 0; }
+}
 @keyframes confirmacion-subir { from { opacity: 0; transform: translateY(16px); filter: blur(3px); } to { opacity: 1; transform: none; filter: none; } }
 @keyframes confirmacion-espaciar { from { opacity: 0; letter-spacing: .6em; } to { opacity: 1; letter-spacing: .28em; } }
 @keyframes confirmacion-abrir { from { opacity: 0; transform: scaleX(.2); } to { opacity: 1; transform: none; } }

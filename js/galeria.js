@@ -89,17 +89,101 @@
     leyendaGrande.textContent = foto.leyenda;
     leyendaGrande.hidden = !foto.leyenda;
   }
+  /* ---------- Animación del visor ----------
+     La foto crece desde su miniatura, cambia deslizándose y al cerrar
+     vuelve a su lugar. Con movimiento reducido sólo aparece. */
+  var quieto = window.matchMedia && window.matchMedia("(prefers-reduced-motion: reduce)").matches;
+  var cerrando = false;
+  var controlesVisor = visor.querySelectorAll(".galeria__visor-barra, .galeria__visor-navegar, [data-galeria-leyenda]");
+  function animar(nodo, cuadros, opciones) {
+    return !quieto && nodo.animate ? nodo.animate(cuadros, opciones) : null;
+  }
+  function decodificada(imagen) {
+    return (imagen.decode ? imagen.decode() : Promise.resolve()).catch(function () {});
+  }
+  function miniatura(indice) {
+    var foto = fotos[indice];
+    var nodo = foto.item.querySelector(".galeria__archivo img") || foto.imagen;
+    var caja = nodo.getBoundingClientRect();
+    return caja.width ? caja : null;
+  }
+  // Transformación que lleva la foto grande al tamaño y recorte de la miniatura
+  function haciaMiniatura(caja) {
+    var r = imagenGrande.getBoundingClientRect();
+    if (!caja || !r.width || !r.height) return null;
+    var escala = Math.max(caja.width / r.width, caja.height / r.height);
+    var recorteX = Math.max(0, (r.width * escala - caja.width) / 2 / escala);
+    var recorteY = Math.max(0, (r.height * escala - caja.height) / 2 / escala);
+    var dx = caja.left + caja.width / 2 - (r.left + r.width / 2);
+    var dy = caja.top + caja.height / 2 - (r.top + r.height / 2);
+    return {
+      transform: "translate(" + dx + "px, " + dy + "px) scale(" + escala + ")",
+      clipPath: "inset(" + recorteY + "px " + recorteX + "px)"
+    };
+  }
   function abrir(indice, boton) {
     disparador = boton;
+    cerrando = false;
     overflowHtml = document.documentElement.style.overflow;
     overflowBody = document.body.style.overflow;
     document.documentElement.style.overflow = "hidden";
     document.body.style.overflow = "hidden";
+    var caja = miniatura(indice);
     mostrar(indice);
     visor.showModal();
     cerrarBoton.focus();
+    if (quieto || !visor.animate) return;
+    imagenGrande.style.opacity = "0";
+    animar(visor, [{ backgroundColor: "rgba(16, 18, 17, 0)" }, { backgroundColor: "rgba(16, 18, 17, 1)" }], { duration: 450, easing: "ease-out" });
+    controlesVisor.forEach(function (nodo) {
+      animar(nodo, [{ opacity: 0 }, { opacity: 1 }], { duration: 400, delay: 320, easing: "ease-out", fill: "backwards" });
+    });
+    decodificada(imagenGrande).then(function () {
+      imagenGrande.style.opacity = "";
+      var inicio = haciaMiniatura(caja);
+      if (inicio) {
+        animar(imagenGrande, [inicio, { transform: "none", clipPath: "inset(0px 0px)" }], { duration: 560, easing: "cubic-bezier(.2, .8, .2, 1)" });
+      } else {
+        animar(imagenGrande, [{ opacity: 0, transform: "scale(.94)" }, { opacity: 1, transform: "none" }], { duration: 400, easing: "ease-out" });
+      }
+    });
   }
-  function cerrar() { if (visor.open) visor.close(); }
+  function cerrar() {
+    if (!visor.open || cerrando) return;
+    if (quieto || !visor.animate) { visor.close(); return; }
+    cerrando = true;
+    var final = haciaMiniatura(miniatura(actual));
+    var salida = final
+      ? animar(imagenGrande, [{ transform: "none", clipPath: "inset(0px 0px)" }, final], { duration: 420, easing: "cubic-bezier(.4, 0, .2, 1)", fill: "forwards" })
+      : animar(imagenGrande, [{ opacity: 1 }, { opacity: 0, transform: "scale(.94)" }], { duration: 300, fill: "forwards" });
+    controlesVisor.forEach(function (nodo) { animar(nodo, [{ opacity: 1 }, { opacity: 0 }], { duration: 200, fill: "forwards" }); });
+    animar(visor, [{ backgroundColor: "rgba(16, 18, 17, 1)" }, { backgroundColor: "rgba(16, 18, 17, 0)" }], { duration: 420, delay: 80, easing: "ease-in", fill: "forwards" });
+    setTimeout(function () {
+      if (visor.open) visor.close();
+      visor.getAnimations && visor.getAnimations({ subtree: true }).forEach(function (a) { a.cancel(); });
+      if (salida) salida.cancel();
+      cerrando = false;
+    }, 500);
+  }
+  // Cambio de foto: la actual sale hacia un lado y la nueva entra del otro
+  var cambiando = false;
+  function cambiar(paso) {
+    if (cerrando) return;
+    if (quieto || !imagenGrande.animate || cambiando) { if (!cambiando) mostrar(actual + paso); return; }
+    cambiando = true;
+    var salida = imagenGrande.animate([{ opacity: 1, transform: "none" }, { opacity: 0, transform: "translateX(" + (-paso * 48) + "px) scale(.97)" }], { duration: 200, easing: "ease-in", fill: "forwards" });
+    leyendaGrande.animate([{ opacity: 1 }, { opacity: 0 }], { duration: 180, fill: "forwards" });
+    salida.onfinish = function () {
+      mostrar(actual + paso);
+      decodificada(imagenGrande).then(function () {
+        salida.cancel();
+        imagenGrande.animate([{ opacity: 0, transform: "translateX(" + (paso * 48) + "px) scale(.97)" }, { opacity: 1, transform: "none" }], { duration: 380, easing: "cubic-bezier(.2, .8, .2, 1)" });
+        leyendaGrande.getAnimations().forEach(function (a) { a.cancel(); });
+        leyendaGrande.animate([{ opacity: 0, transform: "translateY(6px)" }, { opacity: 1, transform: "none" }], { duration: 380, delay: 120, fill: "backwards" });
+        cambiando = false;
+      });
+    };
+  }
   visor.addEventListener("close", function () {
     document.documentElement.style.overflow = overflowHtml;
     document.body.style.overflow = overflowBody;
@@ -110,11 +194,11 @@
   });
   visor.addEventListener("cancel", function (evento) { evento.preventDefault(); cerrar(); });
   cerrarBoton.addEventListener("click", cerrar);
-  anteriorBoton.addEventListener("click", function () { mostrar(actual - 1); });
-  siguienteBoton.addEventListener("click", function () { mostrar(actual + 1); });
+  anteriorBoton.addEventListener("click", function () { cambiar(-1); });
+  siguienteBoton.addEventListener("click", function () { cambiar(1); });
   visor.addEventListener("keydown", function (evento) {
-    if (evento.key === "ArrowLeft") { evento.preventDefault(); mostrar(actual - 1); }
-    else if (evento.key === "ArrowRight") { evento.preventDefault(); mostrar(actual + 1); }
+    if (evento.key === "ArrowLeft") { evento.preventDefault(); cambiar(-1); }
+    else if (evento.key === "ArrowRight") { evento.preventDefault(); cambiar(1); }
     else if (evento.key === "Escape") { evento.preventDefault(); cerrar(); }
     else if (evento.key === "Tab") {
       var controles = [cerrarBoton, anteriorBoton, siguienteBoton];
@@ -132,7 +216,7 @@
     var dx = evento.changedTouches[0].clientX - inicio.x;
     var dy = evento.changedTouches[0].clientY - inicio.y;
     inicio = null;
-    if (Math.abs(dx) > 55 && Math.abs(dx) > Math.abs(dy) * 1.2) mostrar(actual + (dx < 0 ? 1 : -1));
+    if (Math.abs(dx) > 55 && Math.abs(dx) > Math.abs(dy) * 1.2) cambiar(dx < 0 ? 1 : -1);
   }, { passive: true });
 
   var reducido = window.matchMedia && window.matchMedia("(prefers-reduced-motion: reduce)").matches;
